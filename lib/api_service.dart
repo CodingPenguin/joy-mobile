@@ -1,10 +1,7 @@
 import 'dart:developer';
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_test_1/constants.dart';
-import 'package:flutter_test_1/models/user.dart';
 
 class ApiService {
 
@@ -24,7 +21,25 @@ class ApiService {
         "title": "${taskName}",
         "userId": "aaaaa"  // userId hard coded for now
       })
-      .then((value) => print("Task added"))
-      .catchError((onError) => print("Failed to add task: $onError"));
+      .then((value) => log("Task added"))
+      .catchError((onError) => log("Failed to add task: $onError"));
   }
 }
+
+  Future<void> updateTask(String id, Map<String, String> payload) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB.collection("tasks")
+      .doc(id)
+      .set(payload)
+      .then((value) => log("Task $id updated"))
+      .catchError((onError) => log("Failed to update task $id: $onError"));
+  }
+
+  Future<void> deleteTask(String id) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB.collection("tasks")
+      .doc(id)
+      .delete()
+      .then((value) => log("Task $id deleted"))
+      .catchError((onError) => log("Failed to delete task $id: $onError"));
+  }

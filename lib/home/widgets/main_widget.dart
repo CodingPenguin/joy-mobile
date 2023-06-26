@@ -36,8 +36,6 @@ class HomeWidget extends StatelessWidget {
     final ApiService api = ApiService();
 
     final Stream<QuerySnapshot> _tasksStream = api.getTasks();
-    // TODO: ADD TO FIREBASE INSTEAD: https://kymoraa.medium.com/to-do-list-app-with-flutter-firebase-7910bc42cf14
-    List<Widget> tasks = [];
     void addTaskWidget(String title) {
       // tasks.add(TaskWidget(title: title));
       api.addTask(title);
@@ -135,7 +133,7 @@ class HomeWidget extends StatelessWidget {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              return TaskWidget(title: "${data["title"]}");
+              return TaskWidget(id: document.id, title: "${data["title"]}");
             }).toList(),
           );
         })

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TaskWidget extends StatefulWidget {
+  final String id;
   final String title;
-  const TaskWidget({Key? key, required this.title}) : super(key: key);
+  const TaskWidget({Key? key, required this.id, required this.title}) : super(key: key);
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
