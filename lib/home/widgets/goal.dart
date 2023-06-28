@@ -3,19 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../api_service.dart';
 
-class TaskWidget extends StatefulWidget {
+class GoalWidget extends StatefulWidget {
   final String id;
   final String title;
-  const TaskWidget({Key? key, required this.id, required this.title}) : super(key: key);
+  const GoalWidget({Key? key, required this.id, required this.title}) : super(key: key);
 
   @override
-  State<TaskWidget> createState() => _TaskWidgetState();
+  State<GoalWidget> createState() => _GoalWidgetState();
 }
 
-class _TaskWidgetState extends State<TaskWidget> {
+class _GoalWidgetState extends State<GoalWidget> {
   @override
   Widget build(BuildContext context) {
-    bool isChecked = false;
     TextEditingController titleController = TextEditingController(text: widget.title);
 
     return StatefulBuilder(
@@ -115,40 +114,52 @@ class _TaskWidgetState extends State<TaskWidget> {
             );
           },
           child: SizedBox(
-            height: 75,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 6,
             child: Card(
               elevation: 5,
               margin: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 20.0),
               shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xFFDEDEDE)),
                 borderRadius: BorderRadius.circular(15),
               ),
-              color: const Color(0xFF121212),
+              color: const Color(0xFF3F3C3C),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
                 child: Row(
                   children: [
-                    Theme(
-                      data: Theme.of(context).copyWith(unselectedWidgetColor: Color(0xAADEDEDE)),
-                      child: Checkbox(
-                        checkColor: Color(0xFFDEDEDE),
-                        activeColor: Color(0xFFE86500),
-                        value: isChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isChecked = value!;
-                          });
-                        },
-                      )
-                    ),
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.outfit().fontFamily,
-                        fontSize: 18
-                      )
-                    )
+                    Expanded(flex: 1, child: Image.asset('assets/icons/emoji.png')),
+                    Expanded(flex: 3, child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.outfit().fontFamily,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                      Row(children: [
+                        Expanded(flex: 5, child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Padding(padding: EdgeInsets.only(bottom: 5), child: Text(
+                            'Progress %',
+                            style: TextStyle(
+                              fontFamily: GoogleFonts.outfit().fontFamily,
+                              fontSize: 16
+                            )
+                          )),
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            child: LinearProgressIndicator(
+                              value: 0.667,
+                              minHeight: 10,
+                              color: Color(0xFF809CFF),
+                              backgroundColor: Colors.white,
+                              
+                            )
+                          )
+                        ])),
+                        Expanded(flex: 1, child: ImageIcon(AssetImage('assets/icons/Vector.png'), color: Colors.white)),
+                        Expanded(flex: 1, child: Text('36', style: TextStyle(fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 16)))
+                      ])
+                    ]))
                   ],
                 )
               )

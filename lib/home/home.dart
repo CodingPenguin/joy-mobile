@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
           showUnselectedLabels: false,
           elevation: 0,
           items: items,
-          backgroundColor: Colors.black,
+          backgroundColor: const Color(0xFF282828),
         ));
   }
 }

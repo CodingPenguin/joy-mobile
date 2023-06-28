@@ -30,7 +30,7 @@ class _AppState extends State<App> {
       theme: ThemeData(
           fontFamily: GoogleFonts.outfit().fontFamily,
           textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.white),
-          scaffoldBackgroundColor: const Color(0x00000000)),
+          scaffoldBackgroundColor: const Color(0xFF282828)),
       title: 'Joy',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
