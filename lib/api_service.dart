@@ -18,7 +18,7 @@ class ApiService {
         "createdAt": Timestamp.fromDate(DateTime.now()),
         "points": 2, // hard coded
         "state": "incomplete",  // hard coded
-        "title": "${taskName}",
+        "title": taskName,
         "userId": "aaaaa"  // userId hard coded for now
       })
       .then((value) => log("Task added"))
