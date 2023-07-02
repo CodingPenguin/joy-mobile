@@ -27,7 +27,7 @@ class ApiService {
 
   Future<void> addGoalType(String goalType) {
     final firebaseDB = FirebaseFirestore.instance;
-    return firebaseDB.collection("tasks") // need to create goalType array?
+    return firebaseDB.collection("tasks")
       .add({
         "createdAt": Timestamp.fromDate(DateTime.now()),
         "points": 2, // hard coded
