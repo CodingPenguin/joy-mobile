@@ -4,8 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 // import 'package:flutter_test_1/models/user.dart';
 // import 'package:flutter_test_1/api_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../home/home.dart';
+import 'intro/intro.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +33,28 @@ class _AppState extends State<App> {
           fontFamily: GoogleFonts.outfit().fontFamily,
           textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.white),
           scaffoldBackgroundColor: const Color(0xFF282828)),
-      title: 'Joy',
+      title: 'Questify',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
-      home: const Home()
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.userChanges(),
+        initialData: FirebaseAuth.instance.currentUser,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.active) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final user = snapshot.data;
+          if (user != null) {
+            print("user is logged in!");
+            print(user);
+            return Home();
+          }
+
+          print("user is NOT logged in!");
+          return Intro();
+
+        }
+      )
     );
   }
 }
