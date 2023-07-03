@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
+import '../home/home.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -10,7 +11,10 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,44 @@ class _SignupState extends State<Signup> {
                 padding: EdgeInsets.symmetric(vertical: 15.0), 
                 child: TextField(
                   cursorColor: Colors.white,
+                  autocorrect: false,
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 0.5,
+                        color: Colors.white.withOpacity(0.2)
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 0.5,
+                        color: Colors.white.withOpacity(0.2)
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 0.5,
+                        color: Colors.white.withOpacity(0.2)
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    hintText: 'username',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFDEDEDE),
+                      fontFamily: GoogleFonts.outfit().fontFamily,
+                      fontSize: 18
+                    ),
+                  ),
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 15.0), 
+                child: TextField(
+                  cursorColor: Colors.white,
+                  autocorrect: false,
                   controller: emailController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -77,8 +119,10 @@ class _SignupState extends State<Signup> {
                 )
               ),
               TextField(
+                controller: passwordController,
                 cursorColor: Colors.white,
-                controller: emailController,
+                autocorrect: false,
+                obscureText: !passwordVisible,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -107,11 +151,47 @@ class _SignupState extends State<Signup> {
                     fontFamily: GoogleFonts.outfit().fontFamily,
                     fontSize: 18
                   ),
+                  suffixIcon: IconButton(
+                    icon: Icon(passwordVisible
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
+                      color: Colors.white,
+                    ),
+                    splashColor: Colors.transparent,
+                    onPressed: () {
+                      setState( () {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                  )
                 ),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(
-                onPressed: () => {
-                  // Navigator.push(context, )
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      try {
+                        FirebaseAuth.instance.createUserWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text
+                        );
+                        final credential = FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text
+                        );
+                        print(credential['displayName']);
+                        return Home();
+                      } on FirebaseAuthException catch (e) {
+                        // if (e.code == 'user-not-found') {
+                        //   print('No user found for that email.');
+                        // } else if (e.code == 'wrong-password') {
+                        //   print('Wrong password provided for that user.');
+                        // }
+                        rethrow;
+                      }
+                    })
+                  );
                 },
                 style: TextButton.styleFrom(
                   minimumSize: const Size.fromHeight(60),
