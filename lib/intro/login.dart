@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
 import '../home/home.dart';
 
 class Login extends StatefulWidget {
@@ -14,22 +13,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool passwordVisible = false;
 
-  Future<dynamic> _handleLogin(email, password) async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password
-      );
-      return Home();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,8 +80,10 @@ class _LoginState extends State<Login> {
                 )
               ),
               TextField(
-                cursorColor: Colors.white,
                 controller: passwordController,
+                cursorColor: Colors.white,
+                autocorrect: false,
+                obscureText: !passwordVisible,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -125,6 +112,19 @@ class _LoginState extends State<Login> {
                     fontFamily: GoogleFonts.outfit().fontFamily,
                     fontSize: 18
                   ),
+                  suffixIcon: IconButton(
+                    icon: Icon(passwordVisible
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
+                      color: Colors.white,
+                    ),
+                    splashColor: Colors.transparent,
+                    onPressed: () {
+                      setState( () {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                  )
                 ),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(

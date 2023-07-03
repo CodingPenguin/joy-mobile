@@ -34,8 +34,8 @@ class _AppState extends State<App> {
           textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.white),
           scaffoldBackgroundColor: const Color(0xFF282828)),
       title: 'Questify',
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
+      
+      // https://stackoverflow.com/questions/68673592/is-this-the-right-way-to-check-if-user-is-logged-in-flutter-firebase
       home: StreamBuilder(
         stream: FirebaseAuth.instance.userChanges(),
         initialData: FirebaseAuth.instance.currentUser,
@@ -49,7 +49,7 @@ class _AppState extends State<App> {
             print(user);
             return Home();
           }
-
+          
           print("user is NOT logged in!");
           return Intro();
 
