@@ -34,6 +34,8 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
+            // for the below line: https://stackoverflow.com/questions/44978216/flutter-remove-back-button-on-appbar
+            automaticallyImplyLeading: false,
             // title: Image.asset('assets/logos/questify_1152.png',
             //     width: 40, height: 40, fit: BoxFit.fitHeight)),
         ),

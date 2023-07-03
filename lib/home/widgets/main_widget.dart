@@ -19,7 +19,7 @@ class HomeWidget extends StatelessWidget {
       DateTime midnight = DateTime(now.year, now.month, now.day, 0, 0);
       DateTime noon = DateTime(now.year, now.month, now.day, 12, 0);
       DateTime evening = DateTime(now.year, now.month, now.day, 17, 0);
-
+  
       if (now.isAfter(midnight) && now.isBefore(noon)) {
         return Text("Good morning, Danny",
             style: TextStyle(
