@@ -26,6 +26,8 @@ class _GoalWidgetState extends State<GoalWidget> {
   Widget build(BuildContext context) {
     TextEditingController titleController = TextEditingController(text: widget.title);
 
+    ApiService api = ApiService();
+
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) { 
         return GestureDetector(
@@ -97,7 +99,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                                   // closes keyboard when tap elsewhere
                                   FocusManager.instance.primaryFocus?.unfocus();
 
-                                  updateTask(widget.id, {'title': titleController.text});
+                                  api.updateTask(widget.id, {'title': titleController.text});
                                 },
                               ),
                             ),

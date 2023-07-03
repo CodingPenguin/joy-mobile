@@ -78,8 +78,6 @@ class ApiService {
     return firebaseDB.collection("events").snapshots();
   }
 
-}
-
   Future<void> updateTask(String id, Map<String, String> payload) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB.collection("tasks")
@@ -97,3 +95,4 @@ class ApiService {
       .then((value) => log("Task $id deleted"))
       .catchError((onError) => log("Failed to delete task $id: $onError"));
   }
+}
