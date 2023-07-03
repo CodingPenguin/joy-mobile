@@ -13,12 +13,12 @@ class _HomeState extends State<Home> {
   // static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   final List<BottomNavigationBarItem> items = [
-    const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+    const BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
     const BottomNavigationBarItem(
-        icon: Icon(Icons.calendar_today), label: 'Calendar'),
+        icon: Icon(Icons.language_rounded), label: 'Geocommunity'),
     const BottomNavigationBarItem(
-        icon: Icon(Icons.leaderboard), label: 'Leaderboard'),
-    const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        icon: Icon(Icons.arrow_outward_rounded), label: 'Stats'),
+    const BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Profile'),
   ];
 
   void _onTabTapped(int index) {
@@ -34,15 +34,18 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            title: Image.asset('assets/logos/MWHAHAH.png',
-                width: 40, height: 40, fit: BoxFit.fitHeight)),
-        body: SingleChildScrollView(child: widgetOptions.elementAt(_selectedIndex)),
+            // title: Image.asset('assets/logos/questify_1152.png',
+            //     width: 40, height: 40, fit: BoxFit.fitHeight)),
+        ),
+        body: SingleChildScrollView(
+          child: widgetOptions.elementAt(_selectedIndex),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           type: BottomNavigationBarType.fixed,
           onTap: _onTabTapped,
-          unselectedItemColor: const Color(0xFFE86500),
-          selectedItemColor: const Color(0xFFe69d65), // Color(0xFFf76c00),
+          unselectedItemColor: Colors.white.withOpacity(0.5),
+          selectedItemColor: const Color(0xFFFFFFFF), // Color(0xFFf76c00),
           showSelectedLabels: false,
           showUnselectedLabels: false,
           elevation: 0,

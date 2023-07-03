@@ -29,6 +29,36 @@ class ApiService {
     return firebaseDB.collection("tasks").snapshots();
   }
 
+  // Adding a type of goal
+//   Future<void> addTypeForGoal(String taskName) {
+//     final firebaseDB = FirebaseFirestore.instance;
+//     return firebaseDB.collection("tasks")
+//       .add({
+//         "createdAt": Timestamp.fromDate(DateTime.now()),
+//         "points": 2, // hard coded
+//         "state": "incomplete",  // hard coded
+//         "title": taskName,
+//         "userId": "aaaaa"  // userId hard coded for now
+//       })
+//       .then((value) => log("Task added"))
+//       .catchError((onError) => log("Failed to add task: $onError"));
+//   }
+// }
+
+  Future<void> addGoalType(String goalType) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB.collection("tasks")
+      .add({
+        "createdAt": Timestamp.fromDate(DateTime.now()),
+        "points": 2, // hard coded
+        "state": "incomplete",  // hard coded
+        "title": goalType,
+        "userId": "aaaaa"  // userId hard coded for now
+      })
+      .then((value) => log("Task added"))
+      .catchError((onError) => log("Failed to add task: $onError"));
+  }
+
   Future<void> addTask(String goalId, String taskName) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB.collection("tasks")
@@ -42,6 +72,12 @@ class ApiService {
       .then((value) => log("Task added"))
       .catchError((onError) => log("Failed to add task: $onError"));
   }
+
+  Stream<QuerySnapshot> getEvents() {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB.collection("events").snapshots();
+  }
+
 }
 
   Future<void> updateTask(String id, Map<String, String> payload) {

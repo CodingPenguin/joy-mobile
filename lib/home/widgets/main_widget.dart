@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../api_service.dart';
 import 'add_goal.dart';
 import 'goal.dart';
+import 'event.dart';
 import 'search_bar.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -36,6 +37,8 @@ class HomeWidget extends StatelessWidget {
 
     final ApiService api = ApiService();
     final Stream<QuerySnapshot> _goalsStream = api.getGoals();
+    final Stream<QuerySnapshot> _eventsStream = api.getEvents();
+    final Stream<QuerySnapshot> _tasksStream = api.getTasks();
 
     return Column(children: [
       Container(
@@ -44,21 +47,41 @@ class HomeWidget extends StatelessWidget {
           child: buildGreeting()),
       // TODO: UNCOMMENT AFTER DONE WITH EVENTS
       // const SearchBarWidget(),
-      // TODO: UNCOMMENT AFTER DONE WITH GOALS
-      // Container(
-      //   alignment: Alignment.centerLeft,
-      //   margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     children: [
-      //       Text("Your Events",
-      //         style: TextStyle(
-      //           fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24
-      //         )
-      //       )
-      //     ],
-      //   )
-      // ),
+      Container(
+        alignment: Alignment.centerLeft,
+        margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Your Events",
+              style: TextStyle(
+                fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24
+              )
+            )
+          ],
+        )
+      ),
+      StreamBuilder<QuerySnapshot>(
+        stream: _eventsStream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text(style: TextStyle(color: Colors.white), "Unable to get Goals :(");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text(style: TextStyle(color: Colors.white), "Loading Goals...");
+          }
+
+          return SizedBox(height: 150, child: ListView(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+              return EventWidget(id: document.id, title: "${data["title"]}", club: data["club"]);
+            }).toList(),
+          ));
+        }
+      ),
       Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),

@@ -3,54 +3,60 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../api_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// class TaskWidget extends StatefulWidget {
-//   const TaskWidget({Key? key}) : super(key: key);
+class TaskWidget extends StatefulWidget {
+  final String id;
+  final String title;
+  const TaskWidget({Key? key, required this.id, required this.title}) : super(key: key);
 
-//   @override
-//   State<TaskWidget> createState() => _TaskWidgetState();
-// }
+  @override
+  State<TaskWidget> createState() => _TaskWidgetState();
+}
 
 // class _TaskWidgetState extends State<TaskWidget> {
 
 // }
 
-class TaskWidget extends StatelessWidget {
-  final String id;
-  final String title;
-  const TaskWidget({Key? key, required this.id, required this.title});
-
+class _TaskWidgetState extends State<TaskWidget> {
+  bool isChecked = false;
   @override
   Widget build(BuildContext buildContext) {
-    bool isChecked = false;
+    
     return Card(
-              elevation: 5,
-              margin: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 20.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              color: const Color(0xFF3F3C3C),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
-                child: Row(
-                  children: [
-                    Expanded(flex: 3, child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(
-                        this.title,
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.outfit().fontFamily,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold
-                        )
-                      ),
-                    ])),
-                    Checkbox(value: isChecked, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), onChanged: (bool? value) {
-                      // NEED TO FIGURE OUT HAPPENS WHEN CHECKBOX IS CHECKED. DOES THE TASK DISAPPEAR, 
-                      // OR STAY ON THE SCREEN
-                    })
-                  ],
+      elevation: 5,
+      margin: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 20.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      color: const Color(0xFF3F3C3C),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
+        child: Row(
+          children: [
+            Expanded(flex: 3, child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontFamily: GoogleFonts.outfit().fontFamily,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold
                 )
-              )
-            );
+              ),
+            ])),
+            Checkbox(
+              value: isChecked, 
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
+              onChanged: (bool? value) {
+                // NEED TO FIGURE OUT HAPPENS WHEN CHECKBOX IS CHECKED. DOES THE TASK DISAPPEAR, 
+                // OR STAY ON THE SCREEN
+                setState(() {
+                  isChecked = value!;
+                });
+              }
+            )
+          ],
+        )
+      )
+    );
   }
 }
 

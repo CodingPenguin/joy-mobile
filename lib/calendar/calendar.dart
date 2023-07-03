@@ -34,8 +34,9 @@ class _CalendarState extends State<Calendar> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            title: Image.asset('assets/logos/MWHAHAH.png',
-                width: 40, height: 40, fit: BoxFit.fitHeight)),
+            // title: Image.asset('assets/logos/questify_1152.png',
+            //     width: 40, height: 40, fit: BoxFit.fitHeight)),
+        ),
         body: Center(
           child: widgetOptions.elementAt(_selectedIndex),
         ),

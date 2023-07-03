@@ -2,8 +2,8 @@
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="flutter_test_1"
-        android:name="${applicationName}"
+        android:label="questify"
+        android:name="Questify"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
