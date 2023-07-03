@@ -214,7 +214,7 @@ class _AddGoalWidgetState extends State<AddGoalWidget> {
                 child: Row(children: [
                   Expanded(child: TextButton(
                     onPressed: () {
-                      api.addTask(titleController.text);
+                      api.addGoal(titleController.text);
                       Navigator.of(context).pop();
                     },
                     style: TextButton.styleFrom(

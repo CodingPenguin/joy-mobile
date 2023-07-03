@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'add_goal.dart';
+import 'tasks.dart';
 import '../../api_service.dart';
 
 class GoalWidget extends StatefulWidget {
@@ -24,6 +25,8 @@ class _GoalWidgetState extends State<GoalWidget> {
   @override
   Widget build(BuildContext context) {
     TextEditingController titleController = TextEditingController(text: widget.title);
+
+    ApiService api = ApiService();
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) { 
@@ -52,7 +55,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(30),
-                        child: Column(children: [
+                        child: ListView(children: [
                           IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -96,7 +99,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                                   // closes keyboard when tap elsewhere
                                   FocusManager.instance.primaryFocus?.unfocus();
 
-                                  updateTask(widget.id, {'title': titleController.text});
+                                  api.updateTask(widget.id, {'title': titleController.text});
                                 },
                               ),
                             ),
@@ -269,40 +272,63 @@ class _GoalWidgetState extends State<GoalWidget> {
                               ],
                             ),
                           ),
+                          Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Tasks",
+                                style: TextStyle(
+                                    fontFamily:
+                                        GoogleFonts.outfit().fontFamily,
+                                    fontSize: 24)),
+                            TextButton(
+                                onPressed: () {
+                                  // WHAT DOES CLICKING ADD TASK DO. BRING UP A NEW POPUP THAT ASKS FOR TEXT INPUT?
 
-
-                          // Material(
-                          //   child: Container(
-                          //     color: Color(0xFF282828),
-                          //     child: Row(children: [
-                          //       Expanded(flex: 4, child: TextButton(
-                          //         onPressed: () {
-                          //           updateTask(widget.id, {'title': titleController.text});
-                          //           Navigator.of(context).pop();
-                          //         },
-                          //         style: TextButton.styleFrom(
-                          //           minimumSize: Size(40, 60),
-                          //           splashFactory: NoSplash.splashFactory,
-                          //           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          //           padding: EdgeInsets.all(0),
-                          //           backgroundColor: const Color(0xFF9BB1FF)
-                          //         ),
-                          //         child: Text("Update Goal", style: TextStyle(color: Colors.white, fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24.0)),
-                          //       )),
-                          //       Expanded(
-                          //         flex: 1,
-                          //         child: IconButton(
-                          //           icon: const Icon(Icons.delete, color: Colors.white),
-                          //           onPressed: () {
-                          //             deleteTask(widget.id);
-                          //             Navigator.of(context).pop();
-                          //           }
-                          //         )
-                          //       )
-                          //     ])
-                          //   )
-                          // )
-                        ]),
+                                  // TEMPORARY BEHAVIOR
+                                  // HapticFeedback.lightImpact();
+                                        showGeneralDialog(
+                                          barrierLabel: "Label",
+                                          barrierDismissible: true,
+                                          barrierColor:
+                                              Colors.black.withOpacity(0.5),
+                                          transitionDuration:
+                                              Duration(milliseconds: 700),
+                                          context: context,
+                                          pageBuilder: (context, anim1, anim2) {
+                                            return AddGoalWidget();
+                                          },
+                                          transitionBuilder:
+                                              (context, anim1, anim2, child) {
+                                            return SlideTransition(
+                                              position: Tween(
+                                                      begin: Offset(0, 1),
+                                                      end: Offset(0, 0))
+                                                  .animate(anim1),
+                                              child: child,
+                                            );
+                                          },
+                                        );
+                                },
+                                style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    minimumSize: Size(100, 30),
+                                    splashFactory: NoSplash.splashFactory,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    padding: EdgeInsets.all(0),
+                                    backgroundColor:
+                                        const Color(0xFF9BB1FF)),
+                                child: Text("Add Goal",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: GoogleFonts.outfit()
+                                            .fontFamily,
+                                        fontSize: 12)))
+                          ]),
+                        TasksWidget()]),
                       )
                     ),
                 ),
