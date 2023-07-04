@@ -16,22 +16,21 @@ class Intro extends StatefulWidget {
 class _IntroState extends State<Intro> {
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder(
-    //   stream: FirebaseAuth.instance.userChanges(),
-    //   initialData: FirebaseAuth.instance.currentUser,
-    //   builder: (context, snapshot) {
-    //     // EYE ICON CLICK CAUSES THIS TO APPEAR AND IT'S WEIRD. 
-    //     // if (snapshot.connectionState != ConnectionState.active) {
-    //     //   return Center(child: CircularProgressIndicator());
-    //     // }
-    //     final user = snapshot.data;
-    //     if (user != null) {
-    //       print("user is logged in! this is from intro.dart");
-    //       print(user);
-    //       return const Home();
-    //     }
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.userChanges(),
+      initialData: FirebaseAuth.instance.currentUser,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.active) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final user = snapshot.data;
+        if (user != null) {
+          print("user is logged in! this is from intro.dart");
+          print(user);
+          return const Home();
+        }
         
-    //     print("user is NOT logged in!");
+        print("user is NOT logged in!");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -119,7 +118,8 @@ class _IntroState extends State<Intro> {
             )
           ])
         );
-
+      }
+    );
     //   }
     // );
   }
