@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../api_service.dart';
@@ -214,7 +215,7 @@ class _AddGoalWidgetState extends State<AddGoalWidget> {
                 child: Row(children: [
                   Expanded(child: TextButton(
                     onPressed: () {
-                      api.addGoal(titleController.text);
+                      api.addGoal(titleController.text, FirebaseAuth.instance.currentUser?.uid);
                       Navigator.of(context).pop();
                     },
                     style: TextButton.styleFrom(
