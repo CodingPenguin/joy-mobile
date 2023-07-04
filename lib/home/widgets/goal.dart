@@ -22,6 +22,11 @@ class _GoalWidgetState extends State<GoalWidget> {
   int tasksTotal = 10;
   int streaks = 8;
 
+  final scrollController = ScrollController();
+  final focusNode = FocusNode();
+  int maxLine = 3;
+  int currentLine = 1;
+
   @override
   Widget build(BuildContext context) {
     TextEditingController titleController = TextEditingController(text: widget.title);
@@ -79,29 +84,42 @@ class _GoalWidgetState extends State<GoalWidget> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               // TODO: text wrapping mechanism
-                              child: TextField(
-                                keyboardType: TextInputType.text,
-                                controller: titleController,
-                                decoration: const InputDecoration(
-                                  hintText: "Task Title",
-                                  hintStyle: TextStyle(
-                                    color: Color(0xFFDEDEDE),
-                                    fontSize: 24.0,
-                                  ),
-                                ),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24.0,
-                                  overflow: TextOverflow.ellipsis, // dead code
-                                ),
-                                maxLines: 3,
-                                onTapOutside: (PointerDownEvent pointerDownEvent) {
-                                  // closes keyboard when tap elsewhere
-                                  FocusManager.instance.primaryFocus?.unfocus();
+                              child: LayoutBuilder(
+                                builder: (BuildContext context, BoxConstraints constraints) {
+                                  return TextField(
+                                    // keyboardType: TextInputType.,
+                                    controller: titleController,
+                                    scrollController: scrollController,
+                                    focusNode: focusNode,
+                                    decoration: const InputDecoration(
+                                      hintText: "Task Title",
+                                      hintStyle: TextStyle(
+                                        color: Color(0xFFDEDEDE),
+                                        fontSize: 24.0,
+                                      ),
+                                    ),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24.0,
+                                      overflow: TextOverflow.ellipsis, // dead code
+                                    ),
+                                    minLines: 1,
+                                    maxLines: 3,
+                                    onTap: () {
+                                      titleController.selection = TextSelection.collapsed(offset: titleController.text.length);
+                                    },
+                                    onTapOutside: (PointerDownEvent pointerDownEvent) {
+                                      api.updateGoal(widget.id, {'title': titleController.text});
 
-                                  api.updateTask(widget.id, {'title': titleController.text});
+                                      FocusScope.of(context).requestFocus(focusNode);
+                                      scrollController.animateTo(0.0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+
+                                      // closes keyboard when tap elsewhere
+                                      FocusManager.instance.primaryFocus?.unfocus();
+                                    },
+                                  );
                                 },
-                              ),
+                              )
                             ),
                           ),
                           // PROGRESS INDICATOR GENERAL UI

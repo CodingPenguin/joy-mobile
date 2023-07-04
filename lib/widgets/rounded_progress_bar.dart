@@ -1,0 +1,3 @@
+/*
+Custom progress bar that is ABLE to follow the design much more accurately.
+ */

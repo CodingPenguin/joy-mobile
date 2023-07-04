@@ -50,6 +50,16 @@ class ApiService {
         .catchError((onError) => log("Failed to add task: $onError"));
   }
 
+  Future<void> updateGoal(String id, Map<String, String> payload) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB
+        .collection("goals")
+        .doc(id)
+        .update(payload)
+        .then((value) => log("Goal $id updated"))
+        .catchError((onError) => log("Failed to update goal $id: $onError"));
+  }
+
   // https://firebase.flutter.dev/docs/firestore/usage/
   // TODO: MAKE THIS SO THAT IT GETS TASKS WITH GOAL ID
   Stream<QuerySnapshot> getTasks() {
