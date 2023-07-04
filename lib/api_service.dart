@@ -1,14 +1,41 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'models/user.dart';
 
 class ApiService {
 
-  Stream<QuerySnapshot> getGoals() {
+  Future<Map<String, dynamic>> getUser(String? userId) {
     final firebaseDB = FirebaseFirestore.instance;
-    return firebaseDB.collection("goals").snapshots();
+    return firebaseDB.collection('users').doc(userId)
+      .get()
+      .then((DocumentSnapshot doc) {
+        print("Successfully completed");
+        final data = doc.data() as Map<String, dynamic>;
+        return data;
+      });
   }
 
-  Future<void> addGoal(String goalName) {
+  Future<void> addUser(UserModel user) {
+    // https://stackoverflow.com/questions/48541270/how-to-add-document-with-custom-id-to-firestore
+    final firebaseDB = FirebaseFirestore.instance;
+    final _user = user.toJson();
+    _user.remove('id');
+
+    return firebaseDB.collection("users")
+      .doc(user.id)
+      .set(_user)
+      .then((value) => log("User added"))
+      .catchError((onError) => log("Failed to add user: $onError"));
+  }
+
+  Stream<QuerySnapshot> getGoals(String? userId) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB.collection("goals")
+      .where('userId', isEqualTo: userId)
+      .snapshots();
+  }
+
+  Future<void> addGoal(String goalName, String? userId) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB
         .collection("goals")
@@ -17,13 +44,14 @@ class ApiService {
           "points": 2, // hard coded
           "state": "incomplete", // hard coded
           "title": goalName,
-          "userId": "aaaaa" // userId hard coded for now
+          "userId": userId
         })
         .then((value) => log("Task added"))
         .catchError((onError) => log("Failed to add task: $onError"));
   }
 
   // https://firebase.flutter.dev/docs/firestore/usage/
+  // TODO: MAKE THIS SO THAT IT GETS TASKS WITH GOAL ID
   Stream<QuerySnapshot> getTasks() {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB.collection("tasks").snapshots();

@@ -47,7 +47,7 @@ class _AppState extends State<App> {
           if (user != null) {
             print("user is logged in!");
             print(user);
-            return const Home();
+            // return const Home();
           }
           
           print("user is NOT logged in!");
