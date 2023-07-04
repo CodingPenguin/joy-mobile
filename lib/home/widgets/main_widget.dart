@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../api_service.dart';
 import 'add_goal.dart';
 import 'goal.dart';
 import 'event.dart';
-import 'search_bar.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -14,31 +13,57 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Text buildGreeting() {
+    final String? userId = FirebaseAuth.instance.currentUser?.uid;
+    final ApiService api = ApiService();
+    final Stream<QuerySnapshot> _goalsStream = api.getGoals(userId);
+    // keeping events untouched because we haven't implemented events yet
+    final Stream<QuerySnapshot> _eventsStream = api.getEvents();
+
+    FutureBuilder buildGreeting() {
+      print(api.getUser(userId));
       DateTime now = DateTime.now();
       DateTime midnight = DateTime(now.year, now.month, now.day, 0, 0);
       DateTime noon = DateTime(now.year, now.month, now.day, 12, 0);
       DateTime evening = DateTime(now.year, now.month, now.day, 17, 0);
   
       if (now.isAfter(midnight) && now.isBefore(noon)) {
-        return Text("Good morning, Danny",
-            style: TextStyle(
-                fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24));
+        return FutureBuilder(
+          future: api.getUser(userId),
+          builder: (context, snapshot) { 
+            if (snapshot.hasData) {
+              return Text("Good morning, ${snapshot.data['username']}",
+                style: TextStyle(
+                    fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24));
+            }
+            return CircularProgressIndicator();
+          }
+        );
       } else if (now.isAfter(noon) && now.isBefore(evening)) {
-        return Text("Good afternoon, Danny",
-            style: TextStyle(
-                fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24));
+        return FutureBuilder(
+          future: api.getUser(userId),
+          builder: (context, snapshot) { 
+            if (snapshot.hasData) {
+              return Text("Good afternoon, ${snapshot.data['username']}",
+                style: TextStyle(
+                  fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24));
+            }
+            return CircularProgressIndicator();
+          }
+        );
       } else {
-        return Text("Good evening, Danny",
-            style: TextStyle(
-                fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24));
+        return FutureBuilder(
+          future: api.getUser(userId),
+          builder: (context, snapshot) { 
+            if (snapshot.hasData) {
+              return Text("Good evening, ${snapshot.data['username']}",
+                style: TextStyle(
+                  fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24));
+            }
+            return CircularProgressIndicator();
+          }
+        );
       }
     }
-
-    final ApiService api = ApiService();
-    final Stream<QuerySnapshot> _goalsStream = api.getGoals();
-    final Stream<QuerySnapshot> _eventsStream = api.getEvents();
-    final Stream<QuerySnapshot> _tasksStream = api.getTasks();
 
     return Column(children: [
       Container(

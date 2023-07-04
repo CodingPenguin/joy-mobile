@@ -144,9 +144,9 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       try {
-                        final credential = FirebaseAuth.instance.signInWithEmailAndPassword(
+                        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                           email: emailController.text,
                           password: passwordController.text
                         );

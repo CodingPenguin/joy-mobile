@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../api_service.dart';
 import '../home/home.dart';
+import '../home/widgets/main_widget.dart';
+import '../models/user.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -18,6 +22,8 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    final ApiService apiService = ApiService();
+
     return StreamBuilder(
       stream: FirebaseAuth.instance.userChanges(),
       initialData: FirebaseAuth.instance.currentUser,
@@ -185,31 +191,23 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          try {
-                            FirebaseAuth.instance.createUserWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text
-                            );
-                            final credential = FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text
-                            );
-                            print(credential);
-                            return Home();
-                          } on FirebaseAuthException catch (e) {
-                            // if (e.code == 'user-not-found') {
-                            //   print('No user found for that email.');
-                            // } else if (e.code == 'wrong-password') {
-                            //   print('Wrong password provided for that user.');
-                            // }
-                            rethrow;
-                          }
-                        })
+                    onPressed: () async {
+                      final createdUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text
                       );
+                      final user = UserModel(
+                        id: FirebaseAuth.instance.currentUser?.uid,
+                        geoId: "UCI", // hardcoded right now
+                        createdAt: Timestamp.fromDate(DateTime.now()),
+                        username: usernameController.text,
+                        firstName: 'nothing', // hardcoded right now
+                        lastName: 'no last', // hardcoded right now
+                        bio: 'bio..', // hardcoded right now
+                        rank: 'rank', // hardcoded right now
+                        xp: 0 // hardcoded right now
+                      );
+                      apiService.addUser(user);
                     },
                     style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),
