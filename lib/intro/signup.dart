@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
+import '../nav.dart';
 import '../home/home.dart';
-import '../home/widgets/main_widget.dart';
 import '../models/user.dart';
 
 class Signup extends StatefulWidget {
@@ -36,7 +39,7 @@ class _SignupState extends State<Signup> {
         if (user != null) {
           print("user is logged in! this is from signup.dart");
           print(user);
-          return const Home();
+          return const Nav();
         }
         
         print("user is NOT logged in!");
@@ -199,7 +202,7 @@ class _SignupState extends State<Signup> {
                       final user = UserModel(
                         id: FirebaseAuth.instance.currentUser?.uid,
                         geoId: "UCI", // hardcoded right now
-                        createdAt: Timestamp.fromDate(DateTime.now()),
+                        createdAt: DateTime.now(),
                         username: usernameController.text,
                         firstName: 'nothing', // hardcoded right now
                         lastName: 'no last', // hardcoded right now
@@ -208,6 +211,11 @@ class _SignupState extends State<Signup> {
                         xp: 0 // hardcoded right now
                       );
                       apiService.addUser(user);
+                      final prefs = await SharedPreferences.getInstance();
+                      setState(() {
+                        final String _userString = jsonEncode(user);
+                        prefs.setString('user', _userString);
+                      });
                     },
                     style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),

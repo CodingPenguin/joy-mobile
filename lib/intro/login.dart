@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../home/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../api_service.dart';
+import '../models/user.dart';
+import '../nav.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,9 +16,33 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final ApiService api = ApiService();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool passwordVisible = false;
+
+  Future<void> signIn() async {
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text
+    );
+
+    Map<String, dynamic> user = await api.getUser(FirebaseAuth.instance.currentUser?.uid);
+    print("user from api.getUser $user");
+    user['createdAt'] = user['createdAt'].toDate().toString();
+    print("user from api.getUser AFTER parse $user");
+    UserModel userModel = UserModel.fromJson(user);
+    print("user from userModel $userModel");
+    Map<String, dynamic> userJson = userModel.toJson();
+    print("user from userJson $userJson");
+
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      final String _userString = jsonEncode(userJson);
+      print("user _userString $_userString");
+      prefs.setString('user', _userString);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +58,7 @@ class _LoginState extends State<Login> {
         if (user != null) {
           print("user is logged in! this is from login.dart");
           print(user);
-          return const Home();
+          return const Nav();
         }
         
         print("user is NOT logged in!");
@@ -146,10 +175,7 @@ class _LoginState extends State<Login> {
                   Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(
                     onPressed: () async {
                       try {
-                        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passwordController.text
-                        );
+                        signIn();
                         // return Home();
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {

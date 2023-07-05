@@ -9,8 +9,9 @@ class ApiService {
     return firebaseDB.collection('users').doc(userId)
       .get()
       .then((DocumentSnapshot doc) {
-        print("Successfully completed");
-        final data = doc.data() as Map<String, dynamic>;
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        data['id'] = userId;
+        print("SUCCESSFUL $data");
         return data;
       });
   }
