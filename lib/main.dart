@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-// import 'package:flutter_test_1/models/user.dart';
-// import 'package:flutter_test_1/api_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../home/home.dart';
+import 'nav.dart';
 import 'intro/intro.dart';
 
 Future<void> main() async {
@@ -43,16 +40,13 @@ class _AppState extends State<App> {
           if (snapshot.connectionState != ConnectionState.active) {
             return Center(child: CircularProgressIndicator());
           }
+
           final user = snapshot.data;
           if (user != null) {
-            print("user is logged in!");
-            print(user);
-            // return const Home();
+            return const Nav();
           }
-          
-          print("user is NOT logged in!");
-          return const Intro();
 
+          return const Intro();
         }
       )
     );
