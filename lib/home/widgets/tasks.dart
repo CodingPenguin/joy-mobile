@@ -61,10 +61,13 @@ class _TaskWidgetState extends State<TaskWidget> {
 }
 
 class TasksWidget extends StatelessWidget {
+  final String goalId;
+  const TasksWidget({Key? key, required this.goalId}) : super(key: key);
+
   @override
   Widget build(BuildContext buildContext) {
     ApiService api = ApiService();
-    final Stream<QuerySnapshot> _tasksStream = api.getTasks();
+    final Stream<QuerySnapshot> _tasksStream = api.getTasks(goalId);
     return SingleChildScrollView(child: StreamBuilder<QuerySnapshot>(
         stream: _tasksStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

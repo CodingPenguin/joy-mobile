@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'add_goal.dart';
+import 'add_task.dart';
 import 'tasks.dart';
 import '../../api_service.dart';
 
@@ -78,12 +80,12 @@ class _GoalWidgetState extends State<GoalWidget> {
                             margin: const EdgeInsets.symmetric(vertical: verticalMargin),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              // TODO: text wrapping mechanism
+                              // ***DONE*** TODO: text wrapping mechanism
                               child: TextField(
                                 keyboardType: TextInputType.text,
                                 controller: titleController,
                                 decoration: const InputDecoration(
-                                  hintText: "Task Title",
+                                  hintText: "Goal Title",
                                   hintStyle: TextStyle(
                                     color: Color(0xFFDEDEDE),
                                     fontSize: 24.0,
@@ -94,12 +96,11 @@ class _GoalWidgetState extends State<GoalWidget> {
                                   fontSize: 24.0,
                                   overflow: TextOverflow.ellipsis, // dead code
                                 ),
-                                maxLines: 3,
+                                maxLines: null,
                                 onTapOutside: (PointerDownEvent pointerDownEvent) {
                                   // closes keyboard when tap elsewhere
                                   FocusManager.instance.primaryFocus?.unfocus();
-
-                                  api.updateTask(widget.id, {'title': titleController.text});
+                                  api.updateGoal(widget.id, {'title': titleController.text});
                                 },
                               ),
                             ),
@@ -276,39 +277,37 @@ class _GoalWidgetState extends State<GoalWidget> {
                           mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Tasks",
+                            Text("subquests",
                                 style: TextStyle(
                                     fontFamily:
                                         GoogleFonts.outfit().fontFamily,
                                     fontSize: 24)),
                             TextButton(
                                 onPressed: () {
-                                  // WHAT DOES CLICKING ADD TASK DO. BRING UP A NEW POPUP THAT ASKS FOR TEXT INPUT?
-
-                                  // TEMPORARY BEHAVIOR
-                                  // HapticFeedback.lightImpact();
-                                        showGeneralDialog(
-                                          barrierLabel: "Label",
-                                          barrierDismissible: true,
-                                          barrierColor:
-                                              Colors.black.withOpacity(0.5),
-                                          transitionDuration:
-                                              Duration(milliseconds: 700),
-                                          context: context,
-                                          pageBuilder: (context, anim1, anim2) {
-                                            return AddGoalWidget();
-                                          },
-                                          transitionBuilder:
-                                              (context, anim1, anim2, child) {
-                                            return SlideTransition(
-                                              position: Tween(
-                                                      begin: Offset(0, 1),
-                                                      end: Offset(0, 0))
-                                                  .animate(anim1),
-                                              child: child,
-                                            );
-                                          },
-                                        );
+                                  HapticFeedback.lightImpact();
+                                  showGeneralDialog(
+                                    barrierLabel: "Label",
+                                    barrierDismissible: true,
+                                    barrierColor:
+                                        Colors.black.withOpacity(0.5),
+                                    transitionDuration:
+                                        Duration(milliseconds: 700),
+                                    context: context,
+                                    pageBuilder: (context, anim1, anim2) {
+                                      return AddTaskWidget(goalId: widget.id);
+                                      // return AddGoalWidget();
+                                    },
+                                    transitionBuilder:
+                                        (context, anim1, anim2, child) {
+                                      return SlideTransition(
+                                        position: Tween(
+                                                begin: Offset(0, 1),
+                                                end: Offset(0, 0))
+                                            .animate(anim1),
+                                        child: child,
+                                      );
+                                    },
+                                  );
                                 },
                                 style: TextButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -321,14 +320,14 @@ class _GoalWidgetState extends State<GoalWidget> {
                                     padding: EdgeInsets.all(0),
                                     backgroundColor:
                                         const Color(0xFF9BB1FF)),
-                                child: Text("Add Goal",
+                                child: Text("Add Task",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: GoogleFonts.outfit()
                                             .fontFamily,
                                         fontSize: 12)))
                           ]),
-                        TasksWidget()]),
+                        TasksWidget(goalId: widget.id)]),
                       )
                     ),
                 ),
