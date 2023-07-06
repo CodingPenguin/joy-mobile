@@ -21,12 +21,41 @@ class _SignupState extends State<Signup> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final ApiService apiService = ApiService();
   bool passwordVisible = false;
+
+
+  // TODO: NOT TESTED
+  Future<void> signUp() async {
+    final createdUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text
+    );
+
+    final user = UserModel(
+      id: FirebaseAuth.instance.currentUser?.uid,
+      geoId: "UCI", // hardcoded right now
+      createdAt: DateTime.now(),
+      username: usernameController.text,
+      firstName: 'nothing', // hardcoded right now
+      lastName: 'no last', // hardcoded right now
+      bio: 'bio..', // hardcoded right now
+      rank: 'rank', // hardcoded right now
+      xp: 0 // hardcoded right now
+    );
+
+    apiService.addUser(user);
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      final Map<String, dynamic> userJson = user.toJson();
+      final String _userString = jsonEncode(userJson);
+      prefs.setString('user', _userString);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ApiService apiService = ApiService();
-
     return StreamBuilder(
       stream: FirebaseAuth.instance.userChanges(),
       initialData: FirebaseAuth.instance.currentUser,
@@ -195,27 +224,7 @@ class _SignupState extends State<Signup> {
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(
                     onPressed: () async {
-                      final createdUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text
-                      );
-                      final user = UserModel(
-                        id: FirebaseAuth.instance.currentUser?.uid,
-                        geoId: "UCI", // hardcoded right now
-                        createdAt: DateTime.now(),
-                        username: usernameController.text,
-                        firstName: 'nothing', // hardcoded right now
-                        lastName: 'no last', // hardcoded right now
-                        bio: 'bio..', // hardcoded right now
-                        rank: 'rank', // hardcoded right now
-                        xp: 0 // hardcoded right now
-                      );
-                      apiService.addUser(user);
-                      final prefs = await SharedPreferences.getInstance();
-                      setState(() {
-                        final String _userString = jsonEncode(user);
-                        prefs.setString('user', _userString);
-                      });
+                      signUp();
                     },
                     style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),

@@ -25,13 +25,18 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
     super.initState();
-    _loadUser();
+    print('something before the error happens');
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await _loadUser();
+        setState(() { });
+    });
   }
 
   Future<void> _loadUser() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      final String userString = prefs.getString('user') ?? ''; // need to throw an err
+      print('something after the error happens');
+      final String userString = prefs.getString('user') ?? ''; // need to throw an err or sign out the user
       userJson = jsonDecode(userString);
     });
   }
