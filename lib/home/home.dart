@@ -20,7 +20,7 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  Map<String, dynamic> userJson = {};
+  Map<String, dynamic> userJson = {}; // didn't use usermodel because of some weird null err..
 
   @override
   void initState() {
@@ -32,7 +32,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       final String userString = prefs.getString('user') ?? ''; // need to throw an err
-      print(userString);
       userJson = jsonDecode(userString);
     });
   }
@@ -40,13 +39,12 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     final ApiService api = ApiService();
-    final userModel = UserModel.fromJson(userJson);
-    final Stream<QuerySnapshot> _goalsStream = api.getGoals(userModel.id);
+    final Stream<QuerySnapshot> _goalsStream = api.getGoals(userJson['id']);
     // keeping events untouched because we haven't implemented events yet
     final Stream<QuerySnapshot> _eventsStream = api.getEvents();
 
     Text buildGreeting() {
-      print(userModel);
+      print(userJson);
       DateTime now = DateTime.now();
       DateTime midnight = DateTime(now.year, now.month, now.day, 0, 0);
       DateTime noon = DateTime(now.year, now.month, now.day, 12, 0);
@@ -54,7 +52,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   
       if (now.isAfter(midnight) && now.isBefore(noon)) {  
         return Text(
-          "Good morning, ${userModel.username}",
+          "Good morning, ${userJson['username']}",
           style: TextStyle(
             fontFamily: GoogleFonts.outfit().fontFamily,
             fontSize: 24
@@ -62,7 +60,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         );
       } else if (now.isAfter(noon) && now.isBefore(evening)) {
         return Text(
-          "Good afternoon, ${userModel.username}",
+          "Good afternoon, ${userJson['username']}",
           style: TextStyle(
             fontFamily: GoogleFonts.outfit().fontFamily,
             fontSize: 24
@@ -70,7 +68,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         );
       } else {
         return Text(
-          "Good evening, ${userModel.username}",
+          "Good evening, ${userJson['username']}",
           style: TextStyle(
             fontFamily: GoogleFonts.outfit().fontFamily,
             fontSize: 24
