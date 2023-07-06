@@ -273,61 +273,55 @@ class _GoalWidgetState extends State<GoalWidget> {
                               ],
                             ),
                           ),
-                          Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("subquests",
-                                style: TextStyle(
-                                    fontFamily:
-                                        GoogleFonts.outfit().fontFamily,
-                                    fontSize: 24)),
-                            TextButton(
-                                onPressed: () {
-                                  HapticFeedback.lightImpact();
-                                  showGeneralDialog(
-                                    barrierLabel: "Label",
-                                    barrierDismissible: true,
-                                    barrierColor:
-                                        Colors.black.withOpacity(0.5),
-                                    transitionDuration:
-                                        Duration(milliseconds: 700),
-                                    context: context,
-                                    pageBuilder: (context, anim1, anim2) {
-                                      return AddTaskWidget(goalId: widget.id);
-                                      // return AddGoalWidget();
-                                    },
-                                    transitionBuilder:
-                                        (context, anim1, anim2, child) {
-                                      return SlideTransition(
-                                        position: Tween(
-                                                begin: Offset(0, 1),
-                                                end: Offset(0, 0))
-                                            .animate(anim1),
-                                        child: child,
-                                      );
-                                    },
-                                  );
-                                },
-                                style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    minimumSize: Size(100, 30),
-                                    splashFactory: NoSplash.splashFactory,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    padding: EdgeInsets.all(0),
-                                    backgroundColor:
-                                        const Color(0xFF9BB1FF)),
-                                child: Text("Add Task",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: GoogleFonts.outfit()
-                                            .fontFamily,
-                                        fontSize: 12)))
-                          ]),
-                        TasksWidget(goalId: widget.id)]),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("subquests",
+                                  style: TextStyle(
+                                      fontFamily:
+                                          GoogleFonts.outfit().fontFamily,
+                                      fontSize: 24)
+                              ),
+                              Material(
+                                shape: CircleBorder(),
+                                child: Ink(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: const ShapeDecoration(
+                                    shape: CircleBorder(),
+                                    color: Color(0xFF9BB1FF),
+                                  ),
+                                  child: IconButton(onPressed: () {
+                                    HapticFeedback.lightImpact();
+                                    showGeneralDialog(
+                                      barrierLabel: "Label",
+                                      barrierDismissible: true,
+                                      barrierColor: Colors.black.withOpacity(0.5),
+                                      transitionDuration: Duration(milliseconds: 700),
+                                      context: context, 
+                                      pageBuilder: (context, anim1, anim2) {
+                                        return AddTaskWidget(goalId: widget.id);
+                                      },
+                                      transitionBuilder: (context, anim1, anim2, child) {
+                                            return SlideTransition(
+                                              position: Tween(
+                                                      begin: Offset(0, 1),
+                                                      end: Offset(0, 0))
+                                                  .animate(anim1),
+                                              child: child,
+                                            );
+                                          },
+                                    );
+                                  }, 
+                                  icon: const Icon(color: Colors.white, size: 20, Icons.add),
+                                  )
+                                ),
+                              )
+                            ]),
+                          ),
+                          TasksWidget(goalId: widget.id)
+                        ]),
                       )
                     ),
                 ),

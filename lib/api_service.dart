@@ -99,7 +99,7 @@ class ApiService {
 
   // https://firebase.flutter.dev/docs/firestore/usage/
   // https://firebase.google.com/docs/firestore/query-data/queries
-  // TODO: MAKE THIS SO THAT IT GETS TASKS WITH GOAL ID
+  // ***DONE*** TODO: MAKE THIS SO THAT IT GETS TASKS WITH GOAL ID
   Stream<QuerySnapshot> getTasks(String goalId) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB

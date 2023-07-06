@@ -12,49 +12,78 @@ class TaskWidget extends StatefulWidget {
   State<TaskWidget> createState() => _TaskWidgetState();
 }
 
-// class _TaskWidgetState extends State<TaskWidget> {
-
-// }
-
 class _TaskWidgetState extends State<TaskWidget> {
   bool isChecked = false;
   @override
   Widget build(BuildContext buildContext) {
-    
+
+    // callback function to determine color of checkbox after a user interaction
+    // MIGHT OR MIGHT NOT BE NEEDED
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState> {
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+
+      if (states.any(interactiveStates.contains)) {
+        return Colors.blue;
+      }
+      return const Color(0xFF9BB1FF);
+    }
+
     return Card(
       elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 7.5),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(5),
       ),
       color: const Color(0xFF3F3C3C),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
-        child: Row(
-          children: [
-            Expanded(flex: 3, child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                widget.title,
-                style: TextStyle(
-                  fontFamily: GoogleFonts.outfit().fontFamily,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold
+      child: ClipPath(
+        clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+        child: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            left: BorderSide(color: Color(0xFF9BB1FF), width: 8)
+          )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Text(
+                  widget.title,
+                  style: TextStyle(
+                    fontFamily: GoogleFonts.outfit().fontFamily,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold
+                  )
+              ),),
+              Transform.scale(
+                scale: 1.35,
+                child: Checkbox(
+                  checkColor: const Color(0xFF3F3C3C),
+                  // fillColor: MaterialStateColor.resolveWith(getColor), 
+                  activeColor: const Color(0xFF9BB1FF),
+                  value: isChecked, 
+                  shape: const CircleBorder(), 
+                  side: const BorderSide(color: Color(0xFF9BB1FF), width: 1),
+                  onChanged: (bool? value) {
+                    // NEED TO FIGURE OUT HAPPENS WHEN CHECKBOX IS CHECKED. DOES THE TASK DISAPPEAR, 
+                    // OR STAY ON THE SCREEN
+                    setState(() {
+                      isChecked = value!;
+                    });
+                  }
                 )
               ),
-            ])),
-            Checkbox(
-              value: isChecked, 
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
-              onChanged: (bool? value) {
-                // NEED TO FIGURE OUT HAPPENS WHEN CHECKBOX IS CHECKED. DOES THE TASK DISAPPEAR, 
-                // OR STAY ON THE SCREEN
-                setState(() {
-                  isChecked = value!;
-                });
-              }
-            )
-          ],
-        )
+            ],
+          )
+        ),
+      )
       )
     );
   }
