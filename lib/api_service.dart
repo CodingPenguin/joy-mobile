@@ -11,7 +11,6 @@ class ApiService {
       .then((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = userId;
-        print("SUCCESSFUL $data");
         return data;
       });
   }

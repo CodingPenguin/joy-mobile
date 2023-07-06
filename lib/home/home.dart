@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
-import '../models/user.dart';
 import 'widgets/add_goal.dart';
 import 'widgets/goal.dart';
 import 'widgets/event.dart';
@@ -20,22 +17,19 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  Map<String, dynamic> userJson = {}; // didn't use usermodel because of some weird null err..
+  // didn't use usermodel because of some weird null err..
+  // is the same as a dictionary representation of the UserModel class
+  Map<String, dynamic> userJson = {};
 
   @override
   void initState() {
     super.initState();
-    print('something before the error happens');
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await _loadUser();
-        setState(() { });
-    });
+    _loadUser();
   }
 
   Future<void> _loadUser() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      print('something after the error happens');
       final String userString = prefs.getString('user') ?? ''; // need to throw an err or sign out the user
       userJson = jsonDecode(userString);
     });
@@ -49,7 +43,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     final Stream<QuerySnapshot> _eventsStream = api.getEvents();
 
     Text buildGreeting() {
-      print(userJson);
       DateTime now = DateTime.now();
       DateTime midnight = DateTime(now.year, now.month, now.day, 0, 0);
       DateTime noon = DateTime(now.year, now.month, now.day, 12, 0);

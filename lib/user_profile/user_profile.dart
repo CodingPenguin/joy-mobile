@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,7 +17,7 @@ class UserProfileWidget extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const Intro())
         );
-        print('PRESSED SIGNED OUT');
+        log('PRESSED SIGNED OUT');
       },
       child: Text(
         'Sign out',

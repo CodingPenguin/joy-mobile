@@ -1,13 +1,11 @@
 import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
 import '../nav.dart';
-import '../home/home.dart';
 import '../models/user.dart';
 
 class Signup extends StatefulWidget {
@@ -23,11 +21,9 @@ class _SignupState extends State<Signup> {
   TextEditingController passwordController = TextEditingController();
   final ApiService apiService = ApiService();
   bool passwordVisible = false;
-
-
-  // TODO: NOT TESTED
+ 
   Future<void> signUp() async {
-    final createdUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailController.text,
       password: passwordController.text
     );
@@ -66,12 +62,10 @@ class _SignupState extends State<Signup> {
         // }
         final user = snapshot.data;
         if (user != null) {
-          print("user is logged in! this is from signup.dart");
-          print(user);
+          log("user is logged in! this is from signup.dart");
           return const Nav();
         }
         
-        print("user is NOT logged in!");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
 import '../nav.dart';
 import './signup.dart';
 import 'login.dart';
@@ -25,12 +24,9 @@ class _IntroState extends State<Intro> {
         }
         final user = snapshot.data;
         if (user != null) {
-          print("user is logged in! this is from intro.dart");
-          print(user);
           return const Nav();
         }
         
-        print("user is NOT logged in!");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,

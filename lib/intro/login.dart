@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,25 +23,20 @@ class _LoginState extends State<Login> {
   bool passwordVisible = false;
 
   Future<void> signIn() async {
-    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: emailController.text,
       password: passwordController.text
     );
 
     Map<String, dynamic> user = await api.getUser(FirebaseAuth.instance.currentUser?.uid);
-    print("user from api.getUser $user");
     user['createdAt'] = user['createdAt'].toDate().toString();
-    print("user from api.getUser AFTER parse $user");
     UserModel userModel = UserModel.fromJson(user);
-    print("user from userModel $userModel");
     Map<String, dynamic> userJson = userModel.toJson();
-    print("user from userJson $userJson");
 
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      final String _userString = jsonEncode(userJson);
-      print("user _userString $_userString");
-      prefs.setString('user', _userString);
+      final String userString = jsonEncode(userJson);
+      prefs.setString('user', userString);
     });
   }
 
@@ -56,12 +52,10 @@ class _LoginState extends State<Login> {
         // }
         final user = snapshot.data;
         if (user != null) {
-          print("user is logged in! this is from login.dart");
-          print(user);
+          log("user is logged in! this is from login.dart");
           return const Nav();
         }
         
-        print("user is NOT logged in!");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -179,9 +173,9 @@ class _LoginState extends State<Login> {
                         // return Home();
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
-                          print('No user found for that email.');
+                          log('No user found for that email.');
                         } else if (e.code == 'wrong-password') {
-                          print('Wrong password provided for that user.');
+                          log('Wrong password provided for that user.');
                         }
                         throw('somethin');
                       }
