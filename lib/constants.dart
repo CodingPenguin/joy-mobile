@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'home/widgets/main_widget.dart';
-import 'calendar/widgets/main_widget.dart';
-import 'leaderboard/widgets/main_widget.dart';
-import 'user_profile/widgets/main_widget.dart';
+import 'home/home.dart';
+import 'geocommunity/geocommunity.dart';
+import 'leaderboard/leaderboard.dart';
+import 'user_profile/user_profile.dart';
 
 class ApiConstants {
   static String productionUrl = '';
@@ -14,7 +13,7 @@ class ApiConstants {
 
 const List<Widget> widgetOptions = <Widget>[
   HomeWidget(),
-  CalendarWidget(),
+  GeocommunityWidget(),
   LeaderboardWidget(),
   UserProfileWidget(),
 ];
