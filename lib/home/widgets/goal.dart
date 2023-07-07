@@ -17,7 +17,6 @@ class GoalWidget extends StatefulWidget {
 
 class _GoalWidgetState extends State<GoalWidget> {
   static const double verticalMargin = 5.0;  // of the entire top UI
-  static const int maxLineWrappings = 3;
 
   IconData goalIcon = Icons.confirmation_num;  // TODO: change to a more flexible type? instead of the builtin flutter type
   int tasksCompleted = 4;
