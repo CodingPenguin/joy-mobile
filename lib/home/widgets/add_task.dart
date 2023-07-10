@@ -11,13 +11,13 @@ class AddTaskWidget extends StatefulWidget {
   State<AddTaskWidget> createState() => _AddTaskWidgetState();
 }
 class _AddTaskWidgetState extends State<AddTaskWidget> {
-  String? _dropdownValue = "career"; // hard coded to career
+  // String? _dropdownValue = "career"; // hard coded to career
 
   @override
   Widget build(BuildContext context) {
     ApiService api = ApiService();
     TextEditingController titleController = TextEditingController();
-    TextEditingController descriptionController = TextEditingController();
+    // TextEditingController descriptionController = TextEditingController();
     
     return Align(
       alignment: Alignment.bottomCenter,
@@ -75,33 +75,33 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         maxLines: null,
                       ),
                     ),
-                    Material(
-                      color: const Color(0xFF282828),
-                      borderRadius: BorderRadius.circular(
-                          20), // this has to stay if lines 50-57 stay
-                      child: TextField(
-                        keyboardType: TextInputType.text,
-                        controller: descriptionController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          hintText: "description",
-                          hintStyle: TextStyle(
-                            color: Color(0xFFDEDEDE),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                          overflow: TextOverflow.ellipsis, // dead code
-                        ),
-                        maxLines: null,
-                      ),
-                    ),
+                    // Material(
+                    //   color: const Color(0xFF282828),
+                    //   borderRadius: BorderRadius.circular(
+                    //       20), // this has to stay if lines 50-57 stay
+                    //   child: TextField(
+                    //     keyboardType: TextInputType.text,
+                    //     controller: descriptionController,
+                    //     decoration: const InputDecoration(
+                    //       border: InputBorder.none,
+                    //       focusedBorder: InputBorder.none,
+                    //       enabledBorder: InputBorder.none,
+                    //       errorBorder: InputBorder.none,
+                    //       disabledBorder: InputBorder.none,
+                    //       hintText: "description",
+                    //       hintStyle: TextStyle(
+                    //         color: Color(0xFFDEDEDE),
+                    //         fontSize: 16.0,
+                    //       ),
+                    //     ),
+                    //     style: const TextStyle(
+                    //       color: Colors.white,
+                    //       fontSize: 16.0,
+                    //       overflow: TextOverflow.ellipsis, // dead code
+                    //     ),
+                    //     maxLines: null,
+                    //   ),
+                    // ),
                     const Divider(
                       height: 0,
                       thickness: 2,
@@ -109,39 +109,39 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       endIndent: 0,
                       color: Color(0xFF4B4B4B),
                     ),
-                    Material(
-                      color: const Color(0xFF282828),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: DropdownButtonHideUnderline(
-                                child: 
-                                  DropdownButton(
-                                    items: const [
-                                      DropdownMenuItem(value: "career", child: Text("career")),
-                                      DropdownMenuItem(value: "academic", child: Text("academic")),
-                                      DropdownMenuItem(value: "personal", child: Text("personal")),
-                                    ], 
-                                    onChanged: (String? selectedValue) {
-                                      setState(() {
-                                        _dropdownValue = selectedValue;
-                                      });
-                                    },
-                                    value: _dropdownValue,
-                                    style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 20),
-                                    dropdownColor: const Color(0xFF282828),
-                                    icon: const Icon(size: 20, Icons.arrow_drop_down_circle_outlined)
-                                  ),
-                              ),
-                            ),
-                          ]
-                        ),
-                      )
-                    ),
+                    // Material(
+                    //   color: const Color(0xFF282828),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       children: [
+                    //         Directionality(
+                    //           textDirection: TextDirection.rtl,
+                    //           child: DropdownButtonHideUnderline(
+                    //             child: 
+                    //               DropdownButton(
+                    //                 items: const [
+                    //                   DropdownMenuItem(value: "career", child: Text("career")),
+                    //                   DropdownMenuItem(value: "academic", child: Text("academic")),
+                    //                   DropdownMenuItem(value: "personal", child: Text("personal")),
+                    //                 ], 
+                    //                 onChanged: (String? selectedValue) {
+                    //                   setState(() {
+                    //                     _dropdownValue = selectedValue;
+                    //                   });
+                    //                 },
+                    //                 value: _dropdownValue,
+                    //                 style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 20),
+                    //                 dropdownColor: const Color(0xFF282828),
+                    //                 icon: const Icon(size: 20, Icons.arrow_drop_down_circle_outlined)
+                    //               ),
+                    //           ),
+                    //         ),
+                    //       ]
+                    //     ),
+                    //   )
+                    // ),
                     const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                   ]
                 ),

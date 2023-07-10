@@ -58,7 +58,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   widget.title,
                   style: TextStyle(
                     fontFamily: GoogleFonts.outfit().fontFamily,
-                    fontSize: 24,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold
                   )
               ),),

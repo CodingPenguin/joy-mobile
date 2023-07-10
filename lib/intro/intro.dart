@@ -88,7 +88,7 @@ class _IntroState extends State<Intro> {
                       "Already have an account?",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontFamily: GoogleFonts.outfit().fontFamily,
                       ),
                     ),
@@ -102,7 +102,7 @@ class _IntroState extends State<Intro> {
                       child: Text(
                         "Sign in",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontFamily: GoogleFonts.outfit().fontFamily,
                           color: const Color(0xFF9BB1FF)
                         ),
