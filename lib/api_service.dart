@@ -35,6 +35,13 @@ class ApiService {
       .snapshots();
   }
 
+  Future<QuerySnapshot> getGoal(String? userId) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB.collection("goals")
+        .where("userId", isEqualTo: userId)
+        .get();
+  }
+
   Future<void> addGoal(String goalName, String? userId) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB
@@ -48,13 +55,6 @@ class ApiService {
         })
         .then((value) => log("Task added"))
         .catchError((onError) => log("Failed to add task: $onError"));
-  }
-
-  // https://firebase.flutter.dev/docs/firestore/usage/
-  // TODO: MAKE THIS SO THAT IT GETS TASKS WITH GOAL ID
-  Stream<QuerySnapshot> getTasks() {
-    final firebaseDB = FirebaseFirestore.instance;
-    return firebaseDB.collection("tasks").snapshots();
   }
 
   // Adding a type of goal
@@ -87,7 +87,28 @@ class ApiService {
       .catchError((onError) => log("Failed to add task: $onError"));
   }
 
-  Future<void> addTask(String goalId, String taskName) {
+  Future<void> updateGoal(String goalId, Map<String, String> payload) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB
+        .collection("goals")
+        .doc(goalId)
+        .update(payload)
+        .then((value) => log("Task $goalId updated"))
+        .catchError((onError) => log("Failed to update task $goalId: $onError"));
+  }
+
+  // https://firebase.flutter.dev/docs/firestore/usage/
+  // https://firebase.google.com/docs/firestore/query-data/queries
+  // ***DONE*** TODO: MAKE THIS SO THAT IT GETS TASKS WITH GOAL ID
+  Stream<QuerySnapshot> getTasks(String goalId) {
+    final firebaseDB = FirebaseFirestore.instance;
+    return firebaseDB
+        .collection("tasks")
+        .where("goalID", isEqualTo: goalId)
+        .snapshots();
+  }
+
+  Future<void> addTask(String? userId, String goalId, String taskName) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB.collection("tasks")
       .add({
@@ -95,7 +116,7 @@ class ApiService {
         "createdAt": Timestamp.fromDate(DateTime.now()),
         "state": "incomplete",  // hard coded
         "title": taskName,
-        "userId": "aaaaa"  // userId hard coded for now
+        "userId": userId
       })
       .then((value) => log("Task added"))
       .catchError((onError) => log("Failed to add task: $onError"));
@@ -110,7 +131,7 @@ class ApiService {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB.collection("tasks")
       .doc(id)
-      .set(payload)
+      .update(payload)
       .then((value) => log("Task $id updated"))
       .catchError((onError) => log("Failed to update task $id: $onError"));
   }
