@@ -40,7 +40,7 @@ class _IntroState extends State<Intro> {
           body: Column(children: [
             Image.asset('assets/intro.png', width: 400),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 5),
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 6),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,12 +83,12 @@ class _IntroState extends State<Intro> {
                       )
                     )
                   )),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text(
                       "Already have an account?",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontFamily: GoogleFonts.outfit().fontFamily,
                       ),
                     ),
@@ -100,11 +100,12 @@ class _IntroState extends State<Intro> {
                         )
                       },
                       child: Text(
+                        textAlign: TextAlign.center,
                         "Sign in",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontFamily: GoogleFonts.outfit().fontFamily,
-                          color: const Color(0xFF9BB1FF)
+                          color: const Color(0xFF9BB1FF),
                         ),
                       ),
                     )
