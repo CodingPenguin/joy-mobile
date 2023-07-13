@@ -18,8 +18,6 @@ class QFInteractiveTextField extends StatelessWidget {
     required this.onExit,
   });
 
-
-
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -56,9 +54,10 @@ class QFInteractiveTextField extends StatelessWidget {
         // scrolls back up upon exiting the text field
         FocusScope.of(context).requestFocus(focusNode);
         scrollController.animateTo(0.0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+        focusNode.unfocus();
 
         // closes keyboard when tap elsewhere
-        FocusManager.instance.primaryFocus?.unfocus();
+        //FocusManager.instance.primaryFocus?.unfocus();
       },
     );
   }

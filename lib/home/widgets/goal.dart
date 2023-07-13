@@ -164,40 +164,10 @@ class _GoalWidgetState extends State<GoalWidget> {
                                 ],
                               ),
                             ),
-                            // CUSTOM ROUNDED PROGRESS INDICATOR
                             QFRoundedProgressBar(
                               maxValue: tasksTotal,
                               initialValue: tasksCompleted,
                             )
-                            // Container(
-                            //   margin: const EdgeInsets.symmetric(vertical: 4.0),
-                            //   height: 23.0,
-                            //   child: LayoutBuilder(
-                            //     builder: (BuildContext context, BoxConstraints constraints) {
-                            //       return Stack(
-                            //         children: [
-                            //           Positioned( // BACKGROUND
-                            //             child: Container(
-                            //               decoration: const BoxDecoration(
-                            //                 borderRadius: BorderRadius.all(Radius.circular(29.0)),
-                            //                 color: Color(0xFFD9D9D9),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //           Positioned( // FOREGROUND
-                            //             child: Container(
-                            //               width: constraints.maxWidth * (tasksCompleted/tasksTotal),
-                            //               decoration: const BoxDecoration(
-                            //                 borderRadius: BorderRadius.all(Radius.circular(29.0)),
-                            //                 color: Color(0xFF809CFF),
-                            //               ),
-                            //             ),
-                            //           )
-                            //         ],
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -310,14 +280,14 @@ class _GoalWidgetState extends State<GoalWidget> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(vertical: verticalMargin),
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("subquests",
-                              style: TextStyle(
-                                  fontFamily:
-                                      GoogleFonts.outfit().fontFamily,
-                                  fontSize: 24)
+                          const Text(
+                            "subquests",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
                           ),
                           Material(
                             shape: CircleBorder(),
@@ -403,7 +373,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                           fontSize: 16
                         )
                       ))),
-                      ClipRRect(
+                      const ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         child: LinearProgressIndicator(
                           value: 0.667,
@@ -414,7 +384,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                         )
                       )
                     ])),
-                    Expanded(flex: 1, child: ImageIcon(AssetImage('assets/icons/Vector.png'), color: Colors.white)),
+                    const Expanded(flex: 1, child: ImageIcon(AssetImage('assets/icons/Vector.png'), color: Colors.white)),
                     Expanded(flex: 1, child: Text('36', style: TextStyle(fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 16)))
                   ])
                 ]))
