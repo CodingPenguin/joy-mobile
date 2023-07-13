@@ -1,103 +1,79 @@
-// // This is a basic Flutter widget test.
-// //
-// // To perform an interaction with a widget in your test, use the WidgetTester
-// // utility in the flutter_test package. For example, you can send tap and scroll
-// // gestures. You can also use WidgetTester to find child widgets in the widget
-// // tree, read text, and verify that the values of widget properties are correct.
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test_1/models/user.dart';
 
-// // import 'package:flutter/material.dart';
-// // import 'package:flutter_test/flutter_test.dart';
+void main() {
+  Timestamp currTime = Timestamp.now();
+  UserModel user = UserModel(
+    id: 'id',
+    geoId: 'geoId',
+    createdAt: currTime,
+    username: 'username',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    bio: 'bio',
+    rank: 'rank',
+    xp: 0,
+  );
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:flutter_test_1/models/user.dart';
+  Map<String, dynamic> userJson = {
+    'id': 'id',
+    'geoId': 'geoId',
+    'createdAt': currTime.toDate().toString(),
+    'username': 'username',
+    'firstName': 'firstName',
+    'lastName': 'lastName',
+    'bio': 'bio',
+    'rank': 'rank',
+    'xp': 0
+  };
 
-// void main() {
-//   test('UserModel.toJson()', () {
-//     testUserModelToJson();
-//   });
-//   test('UserModel.fromJson()', () {
-//     testUserModelFromJson();
-//   });
-// }
+  Map<String, dynamic> userFirebase = {
+    'geoId': 'geoId',
+    'createdAt': currTime,
+    'username': 'username',
+    'firstName': 'firstName',
+    'lastName': 'lastName',
+    'bio': 'bio',
+    'rank': 'rank',
+    'xp': 0
+  };
 
-// testEventModelToJson() {
-//   Timestamp curr_time = Timestamp.now();
+  test('UserModel.fromJson()', () {
+    UserModel userModelFromJson = UserModel.fromJson(userJson);
 
-//   UserModel testEvent = UserModel(
-//     id: 'id',
-//     geoId: 'geoId',
-//     createdAt: curr_time,
-//     username: 'username',
-//     firstName: 'firstName',
-//     lastName: 'lastName',
-//     bio: 'bio',
-//     rank: 'rank',
-//     xp: 0,
-//   );
+    // https://pub.dev/packages/equatable considered using this, but may come with some unwarranted side effects
+    expect(userModelFromJson.id, user.id);
+    expect(userModelFromJson.geoId, user.geoId);
+    expect(userModelFromJson.createdAt, user.createdAt);
+    expect(userModelFromJson.username, user.username);
+    expect(userModelFromJson.firstName, user.firstName);
+    expect(userModelFromJson.lastName, user.lastName);
+    expect(userModelFromJson.bio, user.bio);
+    expect(userModelFromJson.rank, user.rank);
+    expect(userModelFromJson.xp, user.xp);
+  });
 
-//   Map<String, dynamic> testEventJson = {
-//     'id': 'id',
-//     'geoId': 'geoId',
-//     'club': {
-//       'id': 'clubId',
-//       'name': 'clubName'
-//     },
-//     'createdAt': curr_time.toDate().toString(),
-//     'scheduledAt': curr_time.toDate().toString(),
-//     'name': 'name',
-//     'description': 'description',
-//     'attendees': ['attendee1'],
-//     'xp': 0
-//   };
+  test('UserModel.toJson()', () {
+    expect(user.toJson(), userJson);
+  });
+  
+  test('UserModel.fromFirebase()', () {
+    UserModel userModelFromFirebase = UserModel.fromJson(userFirebase);
 
-//   expect(testEvent.toJson(), testEventJson);
-// }
+    // https://pub.dev/packages/equatable considered using this, but may come with some unwarranted side effects
+    expect(userModelFromFirebase.id, user.id);
+    expect(userModelFromFirebase.geoId, user.geoId);
+    expect(userModelFromFirebase.createdAt, user.createdAt);
+    expect(userModelFromFirebase.username, user.username);
+    expect(userModelFromFirebase.firstName, user.firstName);
+    expect(userModelFromFirebase.lastName, user.lastName);
+    expect(userModelFromFirebase.bio, user.bio);
+    expect(userModelFromFirebase.rank, user.rank);
+    expect(userModelFromFirebase.xp, user.xp);
+  });
 
-// testEventModelFromJson() {
-//   Timestamp curr_time = Timestamp.now();
-
-//   UserModel testEvent = UserModel(
-//     id: 'id',
-//     geoId: 'geoId',
-//     club: {
-//       'id': 'clubId',
-//       'name': 'clubName' 
-//     },
-//     createdAt: curr_time,
-//     scheduledAt: curr_time,
-//     name: 'name',
-//     description: 'description',
-//     attendees: ['attendee1'],
-//     xp: 0,
-//   );
-
-//   Map<String, dynamic> testEventJson = {
-//     'id': 'id',
-//     'geoId': 'geoId',
-//     'club': {
-//       'id': 'clubId',
-//       'name': 'clubName'
-//     },
-//     'createdAt': curr_time.toDate().toString(),
-//     'scheduledAt': curr_time.toDate().toString(),
-//     'name': 'name',
-//     'description': 'description',
-//     'attendees': ['attendee1'],
-//     'xp': 0
-//   };
-
-//   UserModel testModel = UserModel.fromJson(testEventJson);
-
-//   // https://pub.dev/packages/equatable considered using this, but may come with some unwarranted side effects
-//   expect(testModel.id, testEvent.id);
-//   expect(testModel.geoId, testEvent.geoId);
-//   expect(testModel.club, testEvent.club);
-//   expect(testModel.createdAt, testEvent.createdAt);
-//   expect(testModel.scheduledAt, testEvent.scheduledAt);
-//   expect(testModel.name, testEvent.name);
-//   expect(testModel.description, testEvent.description);
-//   expect(testModel.attendees, testEvent.attendees);
-//   expect(testModel.xp, testEvent.xp);
-//   expect(testModel, testEvent);
-// }
+  test('UserModel.toFirebase()', () {
+    expect(user.toFirebase(), userFirebase);
+  });
+}

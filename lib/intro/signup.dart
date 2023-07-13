@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,20 +28,20 @@ class _SignupState extends State<Signup> {
       email: emailController.text,
       password: passwordController.text
     );
-
+    
     final user = UserModel(
       id: FirebaseAuth.instance.currentUser?.uid,
       geoId: "UCI", // hardcoded right now
-      createdAt: DateTime.now(),
+      createdAt: Timestamp.now(),
       username: usernameController.text,
-      firstName: 'nothing', // hardcoded right now
+      firstName: 'nothing NOTHING', // hardcoded right now
       lastName: 'no last', // hardcoded right now
       bio: 'bio..', // hardcoded right now
       rank: 'rank', // hardcoded right now
       xp: 0 // hardcoded right now
     );
-
-    apiService.addUser(user);
+    
+    apiService.addUser(user);    
     final prefs = await SharedPreferences.getInstance();
 
     setState(() {

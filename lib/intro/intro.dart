@@ -40,7 +40,7 @@ class _IntroState extends State<Intro> {
           body: Column(children: [
             Image.asset('assets/intro.png', width: 400),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 5),
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 6),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +83,7 @@ class _IntroState extends State<Intro> {
                       )
                     )
                   )),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text(
                       "Already have an account?",
                       style: TextStyle(
