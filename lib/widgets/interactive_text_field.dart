@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
 
 class QFInteractiveTextField extends StatelessWidget {
-  final TapRegionCallback onExit;
+  final void Function(String newText) onTextUpdate;
   final String? hintText;
 
   final TextEditingController controller;
+  String persistentText;
+  final String initialText;
   final scrollController = ScrollController();
   final focusNode = FocusNode();
   final int maxLines;
-  final int currentLine = 1;
+  // late String persistentText;
 
   QFInteractiveTextField({
     super.key,
-    required this.controller,
+    required this.initialText,
     this.maxLines = 3,
     required this.hintText,
-    required this.onExit,
-  });
+    required this.onTextUpdate,
+  })
+      : controller = TextEditingController(text: initialText),
+        persistentText = initialText;
+
+  void textUpdate(String newText) {
+    if(persistentText != newText) {
+      onTextUpdate(newText);
+      persistentText = newText;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      textInputAction: TextInputAction.done,
       keyboardType: TextInputType.text,
       controller: controller,
       scrollController: scrollController,
@@ -45,19 +57,25 @@ class QFInteractiveTextField extends StatelessWidget {
       minLines: 1,
       maxLines: maxLines,
       onTap: () {
-        // selects (and auto scrolls all the way down) upon entering the text field
-        controller.selection = TextSelection.collapsed(offset: controller.text.length);
+        if(!focusNode.hasPrimaryFocus) {
+          // selects (and auto scrolls all the way down) upon entering the text field
+          controller.selection = TextSelection.collapsed(offset: controller.text.length);
+        }
       },
-      onTapOutside: (e) {
-        onExit(e);
+      onTapOutside: (_) {
+        textUpdate(controller.text);
 
-        // scrolls back up upon exiting the text field
+        // scrolls back up upon exiting the text field & closes keyboard
         FocusScope.of(context).requestFocus(focusNode);
         scrollController.animateTo(0.0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
         focusNode.unfocus();
+      },
+      onSubmitted: (newText) {
+        textUpdate(newText);
 
-        // closes keyboard when tap elsewhere
-        //FocusManager.instance.primaryFocus?.unfocus();
+        FocusScope.of(context).requestFocus(focusNode);
+        scrollController.animateTo(0.0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+        focusNode.unfocus();
       },
     );
   }

@@ -29,7 +29,6 @@ class _GoalWidgetState extends State<GoalWidget> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController(text: widget.title);
 
     ApiService api = ApiService();
     return GestureDetector(
@@ -83,10 +82,10 @@ class _GoalWidgetState extends State<GoalWidget> {
                           alignment: Alignment.centerLeft,
                           // ***DONE*** TODO: text wrapping mechanism
                           child: QFInteractiveTextField(
-                            controller: titleController,
+                            initialText: widget.title,
                             hintText: "Goal title",
-                            onExit: (_) {
-                              api.updateGoal(widget.id, {'title': titleController.text});
+                            onTextUpdate: (newText) {
+                              api.updateGoal(widget.id, {'title': newText});
                             },
                           ),
                         ),
