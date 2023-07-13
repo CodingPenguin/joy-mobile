@@ -42,10 +42,7 @@ class _GoalWidgetState extends State<GoalWidget> {
           pageBuilder: (context, anim1, anim2) {
             return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
               return Material(
-              textStyle: TextStyle(
-                fontFamily: GoogleFonts.poppins().fontFamily,
-                fontWeight: FontWeight.w700
-              ),
+                textStyle: Theme.of(context).primaryTextTheme.bodyMedium,
               color: Colors.transparent,
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -80,7 +77,6 @@ class _GoalWidgetState extends State<GoalWidget> {
                         margin: const EdgeInsets.symmetric(vertical: verticalMargin),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          // ***DONE*** TODO: text wrapping mechanism
                           child: QFInteractiveTextField(
                             initialText: widget.title,
                             hintText: "Goal title",
@@ -93,11 +89,9 @@ class _GoalWidgetState extends State<GoalWidget> {
                       Material(
                         color: const Color(0xFF282828),
                         child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
                           child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Directionality(
                                   textDirection: TextDirection.rtl,
@@ -164,8 +158,8 @@ class _GoalWidgetState extends State<GoalWidget> {
                               ),
                             ),
                             QFRoundedProgressBar(
+                              value: tasksCompleted,
                               maxValue: tasksTotal,
-                              initialValue: tasksCompleted,
                             )
                           ],
                         ),
@@ -372,16 +366,11 @@ class _GoalWidgetState extends State<GoalWidget> {
                           fontSize: 16
                         )
                       ))),
-                      const ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        child: LinearProgressIndicator(
-                          value: 0.667,
-                          minHeight: 10,
-                          color: Color(0xFF809CFF),
-                          backgroundColor: Colors.white,
-                          
-                        )
-                      )
+                      const QFRoundedProgressBar(
+                        value: 4,
+                        maxValue: 6,
+                        height: 10,
+                      ),
                     ])),
                     const Expanded(flex: 1, child: ImageIcon(AssetImage('assets/icons/Vector.png'), color: Colors.white)),
                     Expanded(flex: 1, child: Text('36', style: TextStyle(fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 16)))

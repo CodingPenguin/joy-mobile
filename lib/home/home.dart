@@ -85,13 +85,14 @@ class _HomeWidgetState extends State<HomeWidget> {
       Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Your Events",
+            Text(
+              "Your Events",
               style: TextStyle(
-                fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24
-              )
+                fontSize: 24
+              ),
             )
           ],
         )

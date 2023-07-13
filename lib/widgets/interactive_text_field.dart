@@ -52,7 +52,6 @@ class QFInteractiveTextField extends StatelessWidget {
       style: const TextStyle(
         color: Colors.white,
         fontSize: 24.0,
-        overflow: TextOverflow.ellipsis, // dead code
       ),
       minLines: 1,
       maxLines: maxLines,

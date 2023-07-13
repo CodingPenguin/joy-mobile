@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../api_service.dart';
+import '../../widgets/interactive_text_field.dart';
 
 class AddTaskWidget extends StatefulWidget {
   final String goalId;
@@ -22,7 +23,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 300,
+        height: (2*MediaQuery.of(context).size.height)/3,
         decoration: BoxDecoration(
           color: const Color(0xFF282828),
           borderRadius: BorderRadius.circular(40),
@@ -52,56 +53,14 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     Material(
                       color: const Color(0xFF282828),
                       borderRadius: BorderRadius.circular(20), // this has to stay if lines 50-57 stay
-                      child: TextField(
-                        keyboardType: TextInputType.text,
-                        controller: titleController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          hintText: "subquest name",
-                          hintStyle: TextStyle(
-                            color: Color(0xFFDEDEDE),
-                            fontSize: 24.0,
-                          ),
-                        ),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.0,
-                          overflow: TextOverflow.ellipsis, // dead code
-                        ),
-                        maxLines: null,
+                      child: QFInteractiveTextField(
+                        initialText: "",
+                        hintText: "subquest name",
+                        onTextUpdate: (newText) {
+                          titleController.text = newText;
+                        },
                       ),
                     ),
-                    // Material(
-                    //   color: const Color(0xFF282828),
-                    //   borderRadius: BorderRadius.circular(
-                    //       20), // this has to stay if lines 50-57 stay
-                    //   child: TextField(
-                    //     keyboardType: TextInputType.text,
-                    //     controller: descriptionController,
-                    //     decoration: const InputDecoration(
-                    //       border: InputBorder.none,
-                    //       focusedBorder: InputBorder.none,
-                    //       enabledBorder: InputBorder.none,
-                    //       errorBorder: InputBorder.none,
-                    //       disabledBorder: InputBorder.none,
-                    //       hintText: "description",
-                    //       hintStyle: TextStyle(
-                    //         color: Color(0xFFDEDEDE),
-                    //         fontSize: 16.0,
-                    //       ),
-                    //     ),
-                    //     style: const TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: 16.0,
-                    //       overflow: TextOverflow.ellipsis, // dead code
-                    //     ),
-                    //     maxLines: null,
-                    //   ),
-                    // ),
                     const Divider(
                       height: 0,
                       thickness: 2,

@@ -27,9 +27,18 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          fontFamily: GoogleFonts.outfit().fontFamily,
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.white),
-          scaffoldBackgroundColor: const Color(0xFF282828)),
+        primaryTextTheme: TextTheme(
+          bodyMedium: TextStyle(
+            fontFamily: GoogleFonts.poppins().fontFamily,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: Colors.white,
+          displayColor: Colors.white,
+        ),
+        scaffoldBackgroundColor: const Color(0xFF282828),
+      ),
       title: 'Questify',
       
       // https://stackoverflow.com/questions/68673592/is-this-the-right-way-to-check-if-user-is-logged-in-flutter-firebase
@@ -38,7 +47,7 @@ class _AppState extends State<App> {
         initialData: FirebaseAuth.instance.currentUser,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.active) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final user = snapshot.data;
@@ -48,7 +57,7 @@ class _AppState extends State<App> {
 
           return const Intro();
         }
-      )
+      ),
     );
   }
 }
