@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
-import '../models/event.dart';
 import 'widgets/add_goal.dart';
 import 'widgets/goal.dart';
-import 'widgets/event.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeWidget extends StatefulWidget {
