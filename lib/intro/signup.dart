@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
-import '../home/home.dart';
-import '../home/widgets/main_widget.dart';
+import '../nav.dart';
 import '../models/user.dart';
 
 class Signup extends StatefulWidget {
@@ -18,12 +19,39 @@ class _SignupState extends State<Signup> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final ApiService apiService = ApiService();
   bool passwordVisible = false;
+ 
+  Future<void> signUp() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text
+    );
+
+    final user = UserModel(
+      id: FirebaseAuth.instance.currentUser?.uid,
+      geoId: "UCI", // hardcoded right now
+      createdAt: DateTime.now(),
+      username: usernameController.text,
+      firstName: 'nothing', // hardcoded right now
+      lastName: 'no last', // hardcoded right now
+      bio: 'bio..', // hardcoded right now
+      rank: 'rank', // hardcoded right now
+      xp: 0 // hardcoded right now
+    );
+
+    apiService.addUser(user);
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      final Map<String, dynamic> userJson = user.toJson();
+      final String _userString = jsonEncode(userJson);
+      prefs.setString('user', _userString);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ApiService apiService = ApiService();
-
     return StreamBuilder(
       stream: FirebaseAuth.instance.userChanges(),
       initialData: FirebaseAuth.instance.currentUser,
@@ -34,12 +62,10 @@ class _SignupState extends State<Signup> {
         // }
         final user = snapshot.data;
         if (user != null) {
-          print("user is logged in! this is from signup.dart");
-          print(user);
-          return const Home();
+          log("user is logged in! this is from signup.dart");
+          return const Nav();
         }
         
-        print("user is NOT logged in!");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -192,22 +218,7 @@ class _SignupState extends State<Signup> {
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 15.0), child: TextButton(
                     onPressed: () async {
-                      final createdUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text
-                      );
-                      final user = UserModel(
-                        id: FirebaseAuth.instance.currentUser?.uid,
-                        geoId: "UCI", // hardcoded right now
-                        createdAt: Timestamp.fromDate(DateTime.now()),
-                        username: usernameController.text,
-                        firstName: 'nothing', // hardcoded right now
-                        lastName: 'no last', // hardcoded right now
-                        bio: 'bio..', // hardcoded right now
-                        rank: 'rank', // hardcoded right now
-                        xp: 0 // hardcoded right now
-                      );
-                      apiService.addUser(user);
+                      signUp();
                     },
                     style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),

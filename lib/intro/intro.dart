@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
-import '../home/home.dart';
+import '../nav.dart';
 import './signup.dart';
 import 'login.dart';
 
@@ -25,12 +24,9 @@ class _IntroState extends State<Intro> {
         }
         final user = snapshot.data;
         if (user != null) {
-          print("user is logged in! this is from intro.dart");
-          print(user);
-          return const Home();
+          return const Nav();
         }
         
-        print("user is NOT logged in!");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -44,7 +40,7 @@ class _IntroState extends State<Intro> {
           body: Column(children: [
             Image.asset('assets/intro.png', width: 400),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 5),
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 6),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +83,7 @@ class _IntroState extends State<Intro> {
                       )
                     )
                   )),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text(
                       "Already have an account?",
                       style: TextStyle(
@@ -104,11 +100,12 @@ class _IntroState extends State<Intro> {
                         )
                       },
                       child: Text(
+                        textAlign: TextAlign.center,
                         "Sign in",
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: GoogleFonts.outfit().fontFamily,
-                          color: const Color(0xFF9BB1FF)
+                          color: const Color(0xFF9BB1FF),
                         ),
                       ),
                     )
