@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
 import 'widgets/add_goal.dart';
 import 'widgets/goal.dart';
-import 'widgets/event.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -40,7 +39,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     final ApiService api = ApiService();
     final Stream<QuerySnapshot> _goalsStream = api.getGoals(userJson['id']);
     // keeping events untouched because we haven't implemented events yet
-    final Stream<QuerySnapshot> _eventsStream = api.getEvents();
+    // final Stream<QuerySnapshot> _eventsStream = api.getEvents();
 
     Text buildGreeting() {
       DateTime now = DateTime.now();
@@ -80,43 +79,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.fromLTRB(20, 10, 0, 0),
           child: buildGreeting()),
-      // TODO: UNCOMMENT AFTER DONE WITH EVENTS
       // const SearchBarWidget(),
-      Container(
-        alignment: Alignment.centerLeft,
-        margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Your Events",
-              style: TextStyle(
-                fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24
-              )
-            )
-          ],
-        )
-      ),
-      StreamBuilder<QuerySnapshot>(
-        stream: _eventsStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text(style: TextStyle(color: Colors.white), "Unable to get Goals :(");
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text(style: TextStyle(color: Colors.white), "Loading Goals...");
-          }
-
-          return SizedBox(height: 150, child: ListView(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-              return EventWidget(id: document.id, title: "${data["title"]}", club: data["club"]);
-            }).toList(),
-          ));
-        }
-      ),
       Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),

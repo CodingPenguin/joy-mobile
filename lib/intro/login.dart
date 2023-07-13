@@ -28,10 +28,8 @@ class _LoginState extends State<Login> {
       password: passwordController.text
     );
 
-    Map<String, dynamic> user = await api.getUser(FirebaseAuth.instance.currentUser?.uid);
-    user['createdAt'] = user['createdAt'].toDate().toString();
-    UserModel userModel = UserModel.fromJson(user);
-    Map<String, dynamic> userJson = userModel.toJson();
+    UserModel user = await api.getUser(FirebaseAuth.instance.currentUser?.uid);
+    Map<String, dynamic> userJson = user.toJson();
 
     final prefs = await SharedPreferences.getInstance();
     setState(() {

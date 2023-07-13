@@ -4,26 +4,25 @@ import 'models/user.dart';
 
 class ApiService {
 
-  Future<Map<String, dynamic>> getUser(String? userId) {
+  Future<UserModel> getUser(String? userId) {
     final firebaseDB = FirebaseFirestore.instance;
     return firebaseDB.collection('users').doc(userId)
       .get()
       .then((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = userId;
-        return data;
+        UserModel user = UserModel.fromFirebase(data);
+        return user;
       });
   }
 
   Future<void> addUser(UserModel user) {
     // https://stackoverflow.com/questions/48541270/how-to-add-document-with-custom-id-to-firestore
     final firebaseDB = FirebaseFirestore.instance;
-    final _user = user.toJson();
-    _user.remove('id');
 
     return firebaseDB.collection("users")
       .doc(user.id)
-      .set(_user)
+      .set(user.toFirebase())
       .then((value) => log("User added"))
       .catchError((onError) => log("Failed to add user: $onError"));
   }
