@@ -100,11 +100,12 @@ class _IntroState extends State<Intro> {
                         )
                       },
                       child: Text(
+                        textAlign: TextAlign.center,
                         "Sign in",
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: GoogleFonts.outfit().fontFamily,
-                          color: const Color(0xFF9BB1FF)
+                          color: const Color(0xFF9BB1FF),
                         ),
                       ),
                     )
