@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../widgets/interactive_text_field.dart';
+import '../../widgets/rounded_progress_bar.dart';
 import 'add_goal.dart';
 import 'add_task.dart';
 import 'tasks.dart';
@@ -80,30 +82,10 @@ class _GoalWidgetState extends State<GoalWidget> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           // ***DONE*** TODO: text wrapping mechanism
-                          child: TextField(
-                            keyboardType: TextInputType.text,
+                          child: QFInteractiveTextField(
                             controller: titleController,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              hintText: "Goal Title",
-                              hintStyle: TextStyle(
-                                color: Color(0xFFDEDEDE),
-                                fontSize: 24.0,
-                              ),
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24.0,
-                              overflow: TextOverflow.ellipsis, // dead code
-                            ),
-                            maxLines: null,
-                            onTapOutside: (PointerDownEvent pointerDownEvent) {
-                              // closes keyboard when tap elsewhere
-                              FocusManager.instance.primaryFocus?.unfocus();
+                            hintText: "Goal title",
+                            onExit: (_) {
                               api.updateGoal(widget.id, {'title': titleController.text});
                             },
                           ),
@@ -183,35 +165,39 @@ class _GoalWidgetState extends State<GoalWidget> {
                               ),
                             ),
                             // CUSTOM ROUNDED PROGRESS INDICATOR
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 4.0),
-                              height: 23.0,
-                              child: LayoutBuilder(
-                                builder: (BuildContext context, BoxConstraints constraints) {
-                                  return Stack(
-                                    children: [
-                                      Positioned( // BACKGROUND
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(Radius.circular(29.0)),
-                                            color: Color(0xFFD9D9D9),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned( // FOREGROUND
-                                        child: Container(
-                                          width: constraints.maxWidth * (tasksCompleted/tasksTotal),
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(Radius.circular(29.0)),
-                                            color: Color(0xFF809CFF),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
+                            QFRoundedProgressBar(
+                              maxValue: tasksTotal,
+                              initialValue: tasksCompleted,
+                            )
+                            // Container(
+                            //   margin: const EdgeInsets.symmetric(vertical: 4.0),
+                            //   height: 23.0,
+                            //   child: LayoutBuilder(
+                            //     builder: (BuildContext context, BoxConstraints constraints) {
+                            //       return Stack(
+                            //         children: [
+                            //           Positioned( // BACKGROUND
+                            //             child: Container(
+                            //               decoration: const BoxDecoration(
+                            //                 borderRadius: BorderRadius.all(Radius.circular(29.0)),
+                            //                 color: Color(0xFFD9D9D9),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           Positioned( // FOREGROUND
+                            //             child: Container(
+                            //               width: constraints.maxWidth * (tasksCompleted/tasksTotal),
+                            //               decoration: const BoxDecoration(
+                            //                 borderRadius: BorderRadius.all(Radius.circular(29.0)),
+                            //                 color: Color(0xFF809CFF),
+                            //               ),
+                            //             ),
+                            //           )
+                            //         ],
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
