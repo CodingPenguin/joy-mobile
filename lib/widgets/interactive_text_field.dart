@@ -10,7 +10,8 @@ class QFInteractiveTextField extends StatelessWidget {
   final scrollController = ScrollController();
   final focusNode = FocusNode();
   final int maxLines;
-  // late String persistentText;
+  final TextStyle style;
+  final TextStyle hintStyle;
 
   QFInteractiveTextField({
     super.key,
@@ -18,9 +19,14 @@ class QFInteractiveTextField extends StatelessWidget {
     this.maxLines = 3,
     required this.hintText,
     required this.onTextUpdate,
+    this.style = const TextStyle(
+      color: Colors.white,
+      fontSize: 24.0,
+    )
   })
       : controller = TextEditingController(text: initialText),
-        persistentText = initialText;
+        persistentText = initialText,
+        hintStyle = style.copyWith(color: const Color(0xFFDEDEDE));
 
   void textUpdate(String newText) {
     if(persistentText != newText) {
@@ -44,15 +50,9 @@ class QFInteractiveTextField extends StatelessWidget {
         errorBorder: InputBorder.none,
         disabledBorder: InputBorder.none,
         hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Color(0xFFDEDEDE),
-          fontSize: 24.0,
-        ),
+        hintStyle: hintStyle,
       ),
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 24.0,
-      ),
+      style: style,
       minLines: 1,
       maxLines: maxLines,
       onTap: () {

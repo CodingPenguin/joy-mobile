@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../api_service.dart';
+import '../../widgets/divider.dart';
+import '../../widgets/interactive_text_field.dart';
 
 class AddGoalWidget extends StatefulWidget {
   const AddGoalWidget({Key? key}) : super(key: key);
@@ -30,45 +32,18 @@ class _AddGoalWidgetState extends State<AddGoalWidget> {
             Padding(padding: const EdgeInsets.all(20), child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
               Image.asset('assets/icons/emoji.png'),
               Material(
-                borderRadius: BorderRadius.circular(20), // this has to stay if lines 50-57 stay
-                child: TextField(
-                  cursorColor: Colors.white,
-                  controller: titleController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xFF282828),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    hintText: "Goal Title",
-                    hintStyle: TextStyle(
-                      color: const Color(0xFFDEDEDE),
-                      fontFamily: GoogleFonts.outfit().fontFamily,
-                      fontSize: 24.0
-                    )
-                  ),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: GoogleFonts.outfit().fontFamily,
-                    fontSize: 24.0
-                  ),
-                  enableInteractiveSelection: false,
-                )
-              ), 
-
-              Divider(
-                height: 20,
-                thickness: 2,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.grey,
+                textStyle: Theme.of(context).primaryTextTheme.bodyMedium,
+                color: Colors.transparent,
+                child: QFInteractiveTextField(
+                  initialText: '',
+                  hintText: 'Goal Title',
+                  onTextUpdate: (String newText) {
+                    titleController.text = newText;
+                  },
+                ),
               ),
-                 Material(
+              const QFDivider(),
+              Material(
                 color: Color(0x282828),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Text("choose a type", style: TextStyle(fontFamily: GoogleFonts.outfit().fontFamily, fontSize: 24)),

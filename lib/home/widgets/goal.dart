@@ -298,7 +298,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                                   barrierDismissible: true,
                                   barrierColor: Colors.black.withOpacity(0.5),
                                   transitionDuration: Duration(milliseconds: 700),
-                                  context: context, 
+                                  context: context,
                                   pageBuilder: (context, anim1, anim2) {
                                     return AddTaskWidget(goalId: widget.id);
                                   },
@@ -312,7 +312,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                                         );
                                       },
                                 );
-                              }, 
+                              },
                               icon: const Icon(color: Colors.white, size: 20, Icons.add),
                               )
                             ),
@@ -349,23 +349,34 @@ class _GoalWidgetState extends State<GoalWidget> {
               children: [
                 Expanded(flex: 1, child: Image.asset('assets/icons/emoji.png')),
                 Expanded(flex: 3, child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.outfit().fontFamily,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold
-                    )
+                  Container(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.poppins().fontFamily,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   Row(children: [
                     Expanded(flex: 5, child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      Padding(padding: EdgeInsets.only(bottom: 5), child: Align(alignment: Alignment.centerLeft, child: Text(
-                        'Progress %',
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.outfit().fontFamily,
-                          fontSize: 16
-                        )
-                      ))),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 5),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Progress %',
+                            style: TextStyle(
+                              fontFamily: GoogleFonts.poppins().fontFamily,
+                              fontSize: 16,
+                            ),
+                        ),
+                        ),
+                      ),
                       const QFRoundedProgressBar(
                         value: 4,
                         maxValue: 6,

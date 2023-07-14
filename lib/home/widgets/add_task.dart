@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../api_service.dart';
+import '../../widgets/divider.dart';
 import '../../widgets/interactive_text_field.dart';
 
 class AddTaskWidget extends StatefulWidget {
@@ -61,13 +62,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         },
                       ),
                     ),
-                    const Divider(
-                      height: 0,
-                      thickness: 2,
-                      indent: 0,
-                      endIndent: 0,
-                      color: Color(0xFF4B4B4B),
-                    ),
+                    const QFDivider(),
                     // Material(
                     //   color: const Color(0xFF282828),
                     //   child: Padding(

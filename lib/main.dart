@@ -28,14 +28,30 @@ class _AppState extends State<App> {
     return MaterialApp(
       theme: ThemeData(
         primaryTextTheme: TextTheme(
-          bodyMedium: TextStyle(
+          bodySmall: TextStyle(
+
+          ),
+          bodyMedium: TextStyle(  // regular default font
             fontFamily: GoogleFonts.poppins().fontFamily,
             fontWeight: FontWeight.w700,
+          ),
+          bodyLarge: TextStyle(  // large text for quick summary; large numbers; etc.
+
+          ),
+          titleSmall: TextStyle(  // titles for sub-sections (e.g. goals)
+
+          ),
+          titleMedium: TextStyle(  // large title for front pages (first thing a user should see?)
+
+          ),
+          titleLarge: TextStyle(  // large splash text for signups; etc.
+
           ),
         ),
         textTheme: Theme.of(context).textTheme.apply(
           bodyColor: Colors.white,
           displayColor: Colors.white,
+          fontFamily: GoogleFonts.poppins().fontFamily,
         ),
         scaffoldBackgroundColor: const Color(0xFF282828),
       ),
